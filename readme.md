@@ -1,4 +1,4 @@
-# Industrial Internet of Things connecting to the Web
+# Industrial Internet of Things connected to the Web
 
 This is a demo project for the practical workshops of the [Mittelstand 4.0 Kompetenzzentrum Chemnitz](https://betrieb-machen.de).
 
