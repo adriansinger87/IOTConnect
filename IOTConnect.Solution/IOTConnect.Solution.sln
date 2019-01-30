@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTConnect.Domain", "IOTConnect.Domain\IOTConnect.Domain.csproj", "{F76A3D0B-C94C-4B44-A496-041A8312A79A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTConnect.Services", "IOTConnect.Services\IOTConnect.Services.csproj", "{BFC8123B-3C14-4635-A48B-5A93CEDEADED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F76A3D0B-C94C-4B44-A496-041A8312A79A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F76A3D0B-C94C-4B44-A496-041A8312A79A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F76A3D0B-C94C-4B44-A496-041A8312A79A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F76A3D0B-C94C-4B44-A496-041A8312A79A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFC8123B-3C14-4635-A48B-5A93CEDEADED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFC8123B-3C14-4635-A48B-5A93CEDEADED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFC8123B-3C14-4635-A48B-5A93CEDEADED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFC8123B-3C14-4635-A48B-5A93CEDEADED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E97EF95E-B5C7-45CC-9E5C-1F245252801A}
+	EndGlobalSection
+EndGlobal
