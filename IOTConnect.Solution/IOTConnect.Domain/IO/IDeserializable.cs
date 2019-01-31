@@ -15,6 +15,6 @@ namespace IOTConnect.Domain.IO
         /// <typeparam name="T">the output target type T</typeparam>
         /// <param name="data">the input data</param>
         /// <returns>the output data of type T</returns>
-        T Deserialize<T>(object data);
+        T Deserialize<T>(object data) where T : new();
     }
 }

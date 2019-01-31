@@ -18,4 +18,10 @@
     <ProjectReference Include="..\IOTConnect.Services\IOTConnect.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Test_Data\enilink-config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

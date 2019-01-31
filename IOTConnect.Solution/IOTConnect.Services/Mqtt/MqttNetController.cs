@@ -20,8 +20,7 @@ namespace IOTConnect.Services.Mqtt
 
         public event MqttMessageReceivedEventHandler MessageReceived;
         public event MqttConnectedEventHandler Connected;
-
-      
+        
         // -- constructor
 
         public MqttNetController()
@@ -36,26 +35,26 @@ namespace IOTConnect.Services.Mqtt
             _config = config as MqttConfig;
             _options = new MqttClientOptionsBuilder()
                .WithTcpServer(_config.Broker, _config.Port)
-               //.WithClientId(_config.ClientID)
-               //.WithCleanSession(true)
+               .WithClientId(_config.ClientID)
+               .WithCleanSession(true)
                .Build();
 
             var factory = new MqttFactory();
             _client = factory.CreateMqttClient();
 
-            //_client.Connected += mqttConnected;
-            _client.Connected += async (obj, e) =>
-            {
-                // fire own event for application layer
-                Connected?.Invoke(this, new MqttConnectedEventArgs(_config.Broker, _config.Port, _config.ClientID));
+            _client.Connected += mqttConnected;
+            //_client.Connected += async (obj, e) =>
+            //{
+            //    // fire own event for application layer
+            //    Connected?.Invoke(this, new MqttConnectedEventArgs(_config.Broker, _config.Port, _config.ClientID));
 
-                // bind all topics to the connected broker
-                var client = (IMqttClient)obj;
-                foreach (string topic in _config.Topics)
-                {
-                    await client.SubscribeAsync(new TopicFilterBuilder().WithTopic(topic).Build());
-                }
-            };
+            //    // bind all topics to the connected broker
+            //    var client = (IMqttClient)obj;
+            //    foreach (string topic in _config.Topics)
+            //    {
+            //        await client.SubscribeAsync(new TopicFilterBuilder().WithTopic(topic).Build());
+            //    }
+            //};
 
             _client.Disconnected += async (s, e) =>
             {

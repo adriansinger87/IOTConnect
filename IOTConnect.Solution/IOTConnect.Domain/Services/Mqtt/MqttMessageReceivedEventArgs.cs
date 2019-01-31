@@ -18,7 +18,7 @@ namespace IOTConnect.Domain.Services.Mqtt
             Message = message;
         }
 
-        public T Deserialize<T>(IDeserializable deserializer)
+        public T Deserialize<T>(IDeserializable deserializer) where T : new()
         {
             return deserializer.Deserialize<T>(Message);
         }
