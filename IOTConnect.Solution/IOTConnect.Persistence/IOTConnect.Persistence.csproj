@@ -5,12 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MQTTnet" Version="2.8.5" />
+    <PackageReference Include="NLog" Version="4.5.11" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\IOTConnect.Domain\IOTConnect.Domain.csproj" />
-    <ProjectReference Include="..\IOTConnect.Persistence\IOTConnect.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

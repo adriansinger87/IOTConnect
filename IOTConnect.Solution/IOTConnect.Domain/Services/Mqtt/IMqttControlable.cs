@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace IOTConnect.Domain.Services.Mqtt
 {
@@ -9,11 +10,11 @@ namespace IOTConnect.Domain.Services.Mqtt
     {
         bool CreateClient(ConfigBase config);
 
-        bool Publish(string topic, string message);
+        Task PublishAsync(string topic, string message);
 
-        bool Connect();
+        Task ConnectAsync();
 
-        bool Disconnect();
+        Task DisconnectAsync();
 
         // -- Properties
 

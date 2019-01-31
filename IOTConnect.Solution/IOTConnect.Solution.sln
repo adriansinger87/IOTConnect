@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTConnect.Domain", "IOTConnect.Domain\IOTConnect.Domain.csproj", "{F76A3D0B-C94C-4B44-A496-041A8312A79A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTConnect.Domain", "IOTConnect.Domain\IOTConnect.Domain.csproj", "{F76A3D0B-C94C-4B44-A496-041A8312A79A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTConnect.Services", "IOTConnect.Services\IOTConnect.Services.csproj", "{BFC8123B-3C14-4635-A48B-5A93CEDEADED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTConnect.Services", "IOTConnect.Services\IOTConnect.Services.csproj", "{BFC8123B-3C14-4635-A48B-5A93CEDEADED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTConnect.Persistence", "IOTConnect.Persistence\IOTConnect.Persistence.csproj", "{64C8FDF5-247C-44AF-85CE-66DF1286044B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSTests", "MSTests\MSTests.csproj", "{E05FB7D4-D214-464C-AF39-CC201F3172F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{BFC8123B-3C14-4635-A48B-5A93CEDEADED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFC8123B-3C14-4635-A48B-5A93CEDEADED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFC8123B-3C14-4635-A48B-5A93CEDEADED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64C8FDF5-247C-44AF-85CE-66DF1286044B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64C8FDF5-247C-44AF-85CE-66DF1286044B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64C8FDF5-247C-44AF-85CE-66DF1286044B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64C8FDF5-247C-44AF-85CE-66DF1286044B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E05FB7D4-D214-464C-AF39-CC201F3172F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E05FB7D4-D214-464C-AF39-CC201F3172F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E05FB7D4-D214-464C-AF39-CC201F3172F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E05FB7D4-D214-464C-AF39-CC201F3172F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
