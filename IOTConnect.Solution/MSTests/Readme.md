@@ -1,6 +1,6 @@
 ﻿# MSTests
 
-This assembly contains to the **unit tests** based on the Microsoft Unit Testing Framework MSTest.
+This assembly contains the **unit tests** based on the Microsoft Unit Testing Framework MSTest.
 The Tests cover:
 
 - Domain Layer

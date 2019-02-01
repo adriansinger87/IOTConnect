@@ -9,14 +9,17 @@ namespace IOTConnect.Domain.Models.IoT
     {
         public DeviceBase()
         {
-            Childs = new List<DeviceBase>();
+
+        }
+
+        public override string ToString()
+        {
+            return $"{Id}: last value: {State.Value}";
         }
 
         // -- properties
 
-        public string Name { get; set; }
-
-        public List<DeviceBase> Childs { get; set; }
+        public string Id { get; set; }
 
         public ValueState State { get; set; }
     }
