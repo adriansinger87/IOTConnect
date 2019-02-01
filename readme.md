@@ -7,3 +7,10 @@ This is a demo project for the practical workshops of the [Mittelstand 4.0 Kompe
 - Learn how to consume data from a device via MQTT
 - Develop a web API to consume the data
 - Learn how to structure a software project so that it turns into an extensible system
+
+## Reminder
+
+demo platforms to play with:
+
+- https://playcode.io
+- https://fred.sensetecnic.com/
