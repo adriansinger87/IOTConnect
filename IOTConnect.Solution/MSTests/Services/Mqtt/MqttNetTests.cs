@@ -62,6 +62,8 @@ namespace MSTests.Services.Mqtt
 
             // assert
             Assert.IsTrue(_isConnected);
+
+            await DisconnectAsync();
         }
 
         [TestMethod]
@@ -82,6 +84,7 @@ namespace MSTests.Services.Mqtt
 
             watch.Start();
             while (messages.Count < numMessages && watch.ElapsedMilliseconds < _duration) { }
+            await DisconnectAsync();
 
             // assert
             Assert.IsTrue(messages.Count >= numMessages, $"topics shoud have sent {numMessages} messages");
@@ -93,7 +96,8 @@ namespace MSTests.Services.Mqtt
             // arrange
             var valueStates = new List<ValueState>();
             var numValues = 10;
-            var numDevices = 2;
+            var numDevices = _config.Topics.Count;
+            var buffer = 5;
             var watch = new Stopwatch();
 
             _mqtt.MessageReceived += (o, e) => {
@@ -101,11 +105,12 @@ namespace MSTests.Services.Mqtt
                 var device = _devices.FirstOrNew(e.Topic, out bool created);
                 if (created)
                 {
+                    device.ClearData(buffer);
                     _devices.Add(device);
                 }
 
                 var state = e.Deserialize<ValueState>(new ValueDeserializer());
-                device.State = state;
+                device.Data.Add(state);
                 Log.Info($"{e.Topic}: data: {device.ToString()} after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
                 valueStates.Add(state);
             };
@@ -115,10 +120,12 @@ namespace MSTests.Services.Mqtt
 
             watch.Start();
             while (valueStates.Count < numValues && watch.ElapsedMilliseconds < _duration) { }
+            await DisconnectAsync();
 
             // assert
             Assert.IsTrue(_devices.Count >= numDevices, $"{numDevices} devices shoud have been received");
             Assert.IsTrue(valueStates.Count >= numValues, $"topics shoud have sent {numValues} messages");
+            Assert.IsTrue(_devices[0].Data.Count == buffer, $"The buffer of the device '{_devices[0].Id}' should be fully loaded");
         }
 
         // -- private methods
@@ -127,6 +134,12 @@ namespace MSTests.Services.Mqtt
         {
             Log.Info($"Connecting with {_config.ToString()}", Sources.Mqtt);
             await _mqtt.ConnectAsync();
+        }
+
+        private async Task DisconnectAsync()
+        {
+            Log.Info($"Disconnecting from {_config.ToString()}", Sources.Mqtt);
+            await _mqtt.DisconnectAsync();
         }
 
         private void OnConnected(object sender, MqttConnectedEventArgs e)
