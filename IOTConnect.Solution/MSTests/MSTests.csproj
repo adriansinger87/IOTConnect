@@ -19,13 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Test_Data\enilink-config.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Test_Data\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Test_Data\" />
+    <None Update="Test_Data\enilink-config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
