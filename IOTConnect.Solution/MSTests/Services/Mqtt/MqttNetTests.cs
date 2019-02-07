@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IOTConnect.Persistence.IO.Adapters;
 
 namespace MSTests.Services.Mqtt
 {
@@ -55,15 +56,15 @@ namespace MSTests.Services.Mqtt
         // -- test methods
 
         [TestMethod]
-        public async Task ConnectMqttNet()
+        public async Task ConnectAndDisconnectMqttNet()
         {
-            // arrange & act
+            // connect: act & assert
             await ConnectAsync();
-
-            // assert
             Assert.IsTrue(_isConnected);
 
+            // disconnect: act & assert
             await DisconnectAsync();
+            Assert.IsFalse(_isConnected);
         }
 
         [TestMethod]
@@ -109,7 +110,7 @@ namespace MSTests.Services.Mqtt
                     _devices.Add(device);
                 }
 
-                var state = e.Deserialize<ValueState>(new ValueDeserializer());
+                var state = e.Deserialize<ValueState>(new ValueStateAdapter());
                 device.Data.Add(state);
                 Log.Info($"{e.Topic}: data: {device.ToString()} after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
                 valueStates.Add(state);
@@ -133,13 +134,19 @@ namespace MSTests.Services.Mqtt
         private async Task ConnectAsync()
         {
             Log.Info($"Connecting with {_config.ToString()}", Sources.Mqtt);
+            
+            // act
             await _mqtt.ConnectAsync();
         }
 
         private async Task DisconnectAsync()
         {
             Log.Info($"Disconnecting from {_config.ToString()}", Sources.Mqtt);
-            await _mqtt.DisconnectAsync();
+
+            // act
+            await _mqtt.DisconnectAsync().ContinueWith((task) => {
+                _isConnected = false;
+            });
         }
 
         private void OnConnected(object sender, MqttConnectedEventArgs e)

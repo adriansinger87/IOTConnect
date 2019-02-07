@@ -3,6 +3,7 @@ using IOTConnect.Domain.Services.Mqtt;
 using IOTConnect.Domain.System.Logging;
 using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,7 +21,8 @@ namespace IOTConnect.Services.Mqtt
 
         public event MqttMessageReceivedEventHandler MessageReceived;
         public event MqttConnectedEventHandler Connected;
-        
+        public event MqttConnectedEventHandler Disconnected;
+
         // -- constructor
 
         public MqttNetController()
@@ -42,23 +44,24 @@ namespace IOTConnect.Services.Mqtt
             var factory = new MqttFactory();
             _client = factory.CreateMqttClient();
 
-            _client.Connected += mqttConnected;
-            //_client.Connected += async (obj, e) =>
-            //{
-            //    // fire own event for application layer
-            //    Connected?.Invoke(this, new MqttConnectedEventArgs(_config.Broker, _config.Port, _config.ClientID));
+            //_client.Connected += mqttConnected;
+            _client.Connected += async (obj, e) =>
+            {
+                // fire own event for application layer
+                Connected?.Invoke(this, new MqttConnectedEventArgs(_config.Broker, _config.Port, _config.ClientID));
 
-            //    // bind all topics to the connected broker
-            //    var client = (IMqttClient)obj;
-            //    foreach (string topic in _config.Topics)
-            //    {
-            //        await client.SubscribeAsync(new TopicFilterBuilder().WithTopic(topic).Build());
-            //    }
-            //};
+                // bind all topics to the connected broker
+                var client = (IMqttClient)obj;
+                foreach (string topic in _config.Topics)
+                {
+                    await client.SubscribeAsync(new TopicFilterBuilder().WithTopic(topic).Build());
+                }
+            };
 
             _client.Disconnected += async (s, e) =>
             {
-                Log.Debug("disconnected", Sources.Mqtt);
+                // fire own event for application layer
+                Disconnected?.Invoke(this, new MqttConnectedEventArgs(_config.Broker, _config.Port, _config.ClientID));
 
                 // reconnect after 5 seconds
                 await Task.Delay(TimeSpan.FromSeconds(5));
@@ -84,24 +87,6 @@ namespace IOTConnect.Services.Mqtt
             return true;
         }
 
-        /// <summary>
-        /// separate method in analogy to the anonymous method above
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="e"></param>
-        private async void mqttConnected(object obj, MqttClientConnectedEventArgs e)
-        {
-            // fire own event for application layer
-            Connected?.Invoke(this, new MqttConnectedEventArgs(_config.Broker, _config.Port, _config.ClientID));
-
-            // bind all topics to the connected broker
-            var client = (IMqttClient)obj;
-            foreach (string topic in _config.Topics)
-            {
-                await client.SubscribeAsync(new TopicFilterBuilder().WithTopic(topic).Build());
-            }
-        }
-
         public async Task ConnectAsync()
         {
             await _client.ConnectAsync(_options);
@@ -112,15 +97,32 @@ namespace IOTConnect.Services.Mqtt
             await _client.DisconnectAsync();
         }
 
-        public async Task PublishAsync(string topic, string message)
+        public Task PublishAsync(string topic, string message)
+        {
+            return PublishAsync(topic, message, _config.QoS);
+        }
+
+        public async Task PublishAsync(string topic, string message, int qos)
         {
             MqttApplicationMessage msg = new MqttApplicationMessageBuilder()
                .WithTopic(topic)
                .WithPayload(message)
                .Build();
 
+            if (qos >= 0 &&
+                qos <= 2)
+            {
+                msg.QualityOfServiceLevel = (MqttQualityOfServiceLevel)qos;
+            }
+            else
+            {
+                msg.QualityOfServiceLevel = MqttQualityOfServiceLevel.AtMostOnce;
+            }
+            
             await _client.PublishAsync(msg);
         }
+
+
 
         // -- properties
 

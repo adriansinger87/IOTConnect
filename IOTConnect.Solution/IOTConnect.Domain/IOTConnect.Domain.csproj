@@ -6,12 +6,11 @@
 
   <ItemGroup>
     <Compile Remove="Events\**" />
+    <Compile Remove="Services\Http\**" />
     <EmbeddedResource Remove="Events\**" />
+    <EmbeddedResource Remove="Services\Http\**" />
     <None Remove="Events\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\Http\" />
+    <None Remove="Services\Http\**" />
   </ItemGroup>
 
 </Project>

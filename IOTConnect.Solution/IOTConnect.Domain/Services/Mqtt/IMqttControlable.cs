@@ -11,6 +11,7 @@ namespace IOTConnect.Domain.Services.Mqtt
         bool CreateClient(ConfigBase config);
 
         Task PublishAsync(string topic, string message);
+        Task PublishAsync(string topic, string message, int qos);
 
         Task ConnectAsync();
 
@@ -24,5 +25,6 @@ namespace IOTConnect.Domain.Services.Mqtt
 
         event MqttMessageReceivedEventHandler MessageReceived;
         event MqttConnectedEventHandler Connected;
+        event MqttConnectedEventHandler Disconnected;
     }
 }

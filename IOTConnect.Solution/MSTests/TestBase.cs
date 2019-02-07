@@ -1,5 +1,9 @@
-﻿using IOTConnect.Domain.System.Logging;
+﻿using IOTConnect.Domain.IO;
+using IOTConnect.Domain.System.Enumerations;
+using IOTConnect.Domain.System.Logging;
 using IOTConnect.Persistence.IO;
+using IOTConnect.Persistence.IO.Adapters;
+using IOTConnect.Persistence.IO.Settings;
 using IOTConnect.Services.Mqtt;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MSTests.Persistence;
@@ -12,6 +16,8 @@ namespace MSTests
 {
     public class TestBase
     {
+        private IPersistenceControllable _io;
+
         [TestInitialize]
         public virtual void Arrange()
         {
@@ -19,6 +25,8 @@ namespace MSTests
             {
                 Log.Inject(new TestLogger());
             }
+
+            _io = new IOController();
         }
 
         [TestCleanup]
@@ -29,8 +37,16 @@ namespace MSTests
 
         protected MqttConfig GetEnilinkMqttConfig(List<string> topics = null)
         {
-            var path = Path.Combine(Environment.CurrentDirectory, @"Test_Data\enilink-config.json");
-            MqttConfig config = JsonIO.LoadFromJson<MqttConfig>(path);
+            var fs = new FileSettings
+            {
+                Location = Path.Combine(Environment.CurrentDirectory, @"Test_Data"),
+                Name = "enilink-config.json"
+            };
+
+            var config = _io.Importer(ImportTypes.Json)
+                .Setup(fs)
+                .Import()
+                .ConvertWith<MqttConfig>(new JsonAdapter());
 
             if (topics != null)
             {

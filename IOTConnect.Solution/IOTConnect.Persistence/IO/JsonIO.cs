@@ -59,7 +59,7 @@ namespace IOTConnect.Persistence.IO
         /// <typeparam name="T">Das Objekttyp</typeparam>
         /// <param name="file">Die Zieldatei, inkl. Pfadangabe</param>
         /// <returns>Das ausgelesene Objekt vom Typ T.</returns>
-        public static T LoadFromJson<T>(string file)
+        public static T ReadJson<T>(string file)
         {
             T obj;
             using (StreamReader r = new StreamReader(file))
@@ -69,6 +69,17 @@ namespace IOTConnect.Persistence.IO
             }
 
             return obj;
+        }
+
+        public static string ReadJson(string file)
+        {
+            string result = string.Empty;
+            using (StreamReader r = new StreamReader(file))
+            {
+                result = r.ReadToEnd();
+            }
+
+            return result;
         }
 
         /// <summary>
