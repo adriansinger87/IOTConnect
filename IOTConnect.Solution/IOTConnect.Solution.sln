@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTConnect.Domain", "IOTCon
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTConnect.Services", "IOTConnect.Services\IOTConnect.Services.csproj", "{BFC8123B-3C14-4635-A48B-5A93CEDEADED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTConnect.Persistence", "IOTConnect.Persistence\IOTConnect.Persistence.csproj", "{64C8FDF5-247C-44AF-85CE-66DF1286044B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IOTConnect.Persistence", "IOTConnect.Persistence\IOTConnect.Persistence.csproj", "{64C8FDF5-247C-44AF-85CE-66DF1286044B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSTests", "MSTests\MSTests.csproj", "{E05FB7D4-D214-464C-AF39-CC201F3172F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MSTests", "MSTests\MSTests.csproj", "{E05FB7D4-D214-464C-AF39-CC201F3172F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOTConnect.WebAPI", "IOTConnect.WebAPI\IOTConnect.WebAPI.csproj", "{90540D0D-8E10-4F94-837D-464B4C0B77DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E05FB7D4-D214-464C-AF39-CC201F3172F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E05FB7D4-D214-464C-AF39-CC201F3172F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E05FB7D4-D214-464C-AF39-CC201F3172F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90540D0D-8E10-4F94-837D-464B4C0B77DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90540D0D-8E10-4F94-837D-464B4C0B77DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90540D0D-8E10-4F94-837D-464B4C0B77DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90540D0D-8E10-4F94-837D-464B4C0B77DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
