@@ -1,0 +1,10 @@
+{
+  "Broker": "your.broker.com",
+  "Port": 1883,
+  "ClientID": "yourID",
+  "Topics": [
+    "your/topics/1",
+    "your/topics/2",
+    "your/topics/3"
+  ]
+}

@@ -122,8 +122,6 @@ namespace IOTConnect.Services.Mqtt
             await _client.PublishAsync(msg);
         }
 
-
-
         // -- properties
 
         public ConfigBase Config { get { return _config; } }
