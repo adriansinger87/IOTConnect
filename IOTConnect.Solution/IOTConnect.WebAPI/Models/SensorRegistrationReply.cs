@@ -31,6 +31,14 @@ namespace IOTConnect.WebAPI.Models
             set { sensorValue = value; }
         }
 
+        int timestamp;
+
+        public int Timestamp
+        {
+            get { return timestamp; }
+            set { timestamp = value; }
+        }
+
         String registrationStatus;
 
         public String RegistrationStatus

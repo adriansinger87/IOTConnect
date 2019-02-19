@@ -30,5 +30,13 @@ namespace IOTConnect.WebAPI.Models
             get { return sensorValue; }
             set { sensorValue = value; }
         }
+
+        int timestamp;
+
+        public int Timestamp
+        {
+            get { return timestamp; }
+            set { timestamp = value; }
+        }
     }
 }
