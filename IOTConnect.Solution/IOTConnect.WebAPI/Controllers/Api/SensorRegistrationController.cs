@@ -34,6 +34,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
             SensorRegistration.getInstance().Add(sensorreg);
             senregreply.ID = sensorreg.ID;
             senregreply.Name = sensorreg.Name;
+            senregreply.Timestamp = sensorreg.Timestamp;
             senregreply.SensorValue = sensorreg.SensorValue;
             senregreply.RegistrationStatus = "Succesfull";
 
@@ -48,6 +49,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
             SensorRegistration.getInstance().Add(sensorreg);
             senregreply.ID = sensorreg.ID;
             senregreply.Name = sensorreg.Name;
+            senregreply.Timestamp = sensorreg.Timestamp;
             senregreply.SensorValue = sensorreg.SensorValue;
             senregreply.RegistrationStatus = "Succesfull";
 
@@ -64,6 +66,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
             SensorRegistration.getInstance().Add(sensorreg);
             senregreply.ID = sensorreg.ID;
             senregreply.Name = sensorreg.Name;
+            senregreply.Timestamp = sensorreg.Timestamp;
             senregreply.SensorValue = sensorreg.SensorValue;
             senregreply.RegistrationStatus = "Succesfull";
 

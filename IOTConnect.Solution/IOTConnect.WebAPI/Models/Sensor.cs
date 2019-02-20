@@ -11,6 +11,9 @@ namespace IOTConnect.WebAPI.Models
         public string Name { get; set; }
         public double SensorValue { get; set; }
 
+        // TODO @ AP: warum kein DateTime oder string, der dann vom Datetime gecastet wird?
+        public int Timestamp { get; set; }
+
         /*
          * TODO @ AP: Bitte die Klasse "aufräumen", auskommentierten "Zombi-" Code und meinen Kommentar entfernen.
          * 
@@ -18,7 +21,7 @@ namespace IOTConnect.WebAPI.Models
          * Dann lassen sichdeine 30 Zeilen als als 3-Zeiler angeben (siehe oben). Man kann also direkt mit den Properties arbeiten,
          * ohne eine private Variable zu benötigen.
          */
-        
+
         //String iD;
 
         //public String ID
@@ -41,6 +44,14 @@ namespace IOTConnect.WebAPI.Models
         //{
         //    get { return sensorValue; }
         //    set { sensorValue = value; }
+        //}
+
+        //int timestamp;
+
+        //public int Timestamp
+        //{
+        //    get { return timestamp; }
+        //    set { timestamp = value; }
         //}
     }
 }

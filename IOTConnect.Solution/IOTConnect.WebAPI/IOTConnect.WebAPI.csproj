@@ -15,8 +15,4 @@
     <ProjectReference Include="..\IOTConnect.Services\IOTConnect.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Api\" />
-  </ItemGroup>
-
 </Project>
