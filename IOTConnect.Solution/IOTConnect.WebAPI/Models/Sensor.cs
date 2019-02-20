@@ -7,28 +7,40 @@ namespace IOTConnect.WebAPI.Models
 {
     public class Sensor
     {
-        String iD;
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public double SensorValue { get; set; }
 
-        public String ID
-        {
-            get { return iD; }
-            set { iD = value; }
-        }
+        /*
+         * TODO @ AP: Bitte die Klasse "aufräumen", auskommentierten "Zombi-" Code und meinen Kommentar entfernen.
+         * 
+         * Hinweis: Die Codebase für Properties kann in C# deutlich vereinfacht werden, wenn man keine Logik ausführt.
+         * Dann lassen sichdeine 30 Zeilen als als 3-Zeiler angeben (siehe oben). Man kann also direkt mit den Properties arbeiten,
+         * ohne eine private Variable zu benötigen.
+         */
+        
+        //String iD;
 
-        String name;
+        //public String ID
+        //{
+        //    get { return iD; }
+        //    set { iD = value; }
+        //}
 
-        public String Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+        //String name;
 
-        double sensorValue;
+        //public String Name
+        //{
+        //    get { return name; }
+        //    set { name = value; }
+        //}
 
-        public double SensorValue
-        {
-            get { return sensorValue; }
-            set { sensorValue = value; }
-        }
+        //double sensorValue;
+
+        //public double SensorValue
+        //{
+        //    get { return sensorValue; }
+        //    set { sensorValue = value; }
+        //}
     }
 }

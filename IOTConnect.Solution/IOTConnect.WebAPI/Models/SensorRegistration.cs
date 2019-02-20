@@ -15,6 +15,11 @@ namespace IOTConnect.WebAPI.Models
             sensorList = new List<Sensor>();
         }
 
+        /*
+         * TODO @ AP: singleton pattern bitte verwerfen und durch eine nicht statische Instanz ersetzen. Diese z.B. in einer Session verwalten
+         * Hintergrund: static fields werden von allen clients geteilt, die die Seite aufrufen, das führt bei Mehrfachzugriff auf die Seite zu ungewolltem Verhalten
+         */
+
         public static SensorRegistration getInstance()
         {
             if (senreg == null)
