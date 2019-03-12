@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.Serialization;
-using System.Text;
 
-namespace IOTConnect.Domain.Models.Values
+namespace IOTConnect.Application.Values
 {
     [DataContract(Name = "ValueState", Namespace = "http://linkedfactory.iwu.fraunhofer.de/M40")]
     public class ValueState
@@ -46,7 +44,7 @@ namespace IOTConnect.Domain.Models.Values
                 this._time = value;
 
                 DateTime result;
-                var success = DateTime.TryParse(value,null, global::System.Globalization.DateTimeStyles.RoundtripKind, out result);
+                var success = DateTime.TryParse(value, null, global::System.Globalization.DateTimeStyles.RoundtripKind, out result);
 
                 if (success)
                 {
@@ -54,7 +52,7 @@ namespace IOTConnect.Domain.Models.Values
                 }
                 else
                 {
-                    _date = DateTime.Now; 
+                    _date = DateTime.Now;
                 }
 
             }

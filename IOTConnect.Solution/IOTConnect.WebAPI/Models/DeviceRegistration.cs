@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace IOTConnect.WebAPI.Models
 {
+    [Obsolete]
     public class DeviceRegistration
     {
         List<Device> sensorList;
@@ -22,7 +23,7 @@ namespace IOTConnect.WebAPI.Models
          /*
           * TODO @ AP: use DeviceBase, Circularbuffer from IOTConnect.Domain
           */
-          //TODO @ AP: Add Session to Startup.cs
+          //TODO @ AP: optional dd a session service to Startup.cs
         public static DeviceRegistration getInstance()
         {
             if (senreg == null)

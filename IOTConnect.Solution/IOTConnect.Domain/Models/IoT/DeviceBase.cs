@@ -1,42 +1,24 @@
-﻿using IOTConnect.Domain.Models.Values;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IOTConnect.Domain.Models.IoT
+﻿namespace IOTConnect.Domain.Models.IoT
 {
-    public class DeviceBase
+    public abstract class DeviceBase
     {
-        private const int _defaultBuffer = 1000;
 
         // -- constructors
 
-        public DeviceBase()
+        public DeviceBase(string id)
         {
-            Data = new CircularBuffer<ValueState>(_defaultBuffer);
-        }
-
-        public DeviceBase(int dataBuffer)
-        {
-            ClearData(dataBuffer);
+            Id = id;
         }
 
         // -- methods
 
-        public void ClearData(int size = _defaultBuffer)
-        {
-            Data = new CircularBuffer<ValueState>(size);
-        }
-
-        public override string ToString()
-        {
-            return $"{Id}: last value: {Data.Peek.Value}";
-        }
+        public override string ToString() => $"{Id}: {Name}";
 
         // -- properties
 
         public string Id { get; set; }
 
-        public CircularBuffer<ValueState> Data { get; set; }
+        public string Name { get; set; }
+
     }
 }

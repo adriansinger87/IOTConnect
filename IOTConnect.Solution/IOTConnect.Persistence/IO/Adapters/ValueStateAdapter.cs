@@ -1,9 +1,7 @@
-﻿using IOTConnect.Domain.IO;
-using IOTConnect.Domain.Models.Values;
+﻿using IOTConnect.Application.Values;
+using IOTConnect.Domain.IO;
 using IOTConnect.Domain.System.Logging;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace IOTConnect.Persistence.IO.Adapters
 {

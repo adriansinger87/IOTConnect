@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IOTConnect.Domain.System.Logging
+﻿namespace IOTConnect.Domain.System.Logging
 {
     /// <summary>
     /// statische Klasse zur Speicherung von Zeichenketten, die als Namen für beliebige Infrstruktur-Quellen dienen

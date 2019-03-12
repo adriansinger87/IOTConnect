@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace IOTConnect.Domain.Models.Values
+namespace IOTConnect.Application.Values
 {
     public class CircularBuffer<T>
     {

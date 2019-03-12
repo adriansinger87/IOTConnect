@@ -1,18 +1,16 @@
-﻿using IOTConnect.Domain.Models.IoT;
-using IOTConnect.Domain.Models.Values;
+﻿using IOTConnect.Application.Devices;
+using IOTConnect.Application.Values;
+using IOTConnect.Domain.Models.IoT;
 using IOTConnect.Domain.Services.Mqtt;
-using IOTConnect.Domain.System.Logging;
 using IOTConnect.Domain.System.Extensions;
-using IOTConnect.Persistence.IO;
+using IOTConnect.Domain.System.Logging;
+using IOTConnect.Persistence.IO.Adapters;
 using IOTConnect.Services.Mqtt;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using IOTConnect.Persistence.IO.Adapters;
 
 namespace MSTests.Services.Mqtt
 {
@@ -27,7 +25,7 @@ namespace MSTests.Services.Mqtt
 
         private int _duration = 30000;
 
-        private List<DeviceBase> _devices;
+        private List<SensorDevice> _devices;
 
         // -- overrides
 
@@ -37,7 +35,7 @@ namespace MSTests.Services.Mqtt
             base.Arrange();
 
             _isConnected = false;
-            _devices = new List<DeviceBase>();
+            _devices = new List<SensorDevice>();
 
             _config = base.GetEnilinkMqttConfig();
             //_config = base.GetHiveMQConfig();
@@ -75,7 +73,8 @@ namespace MSTests.Services.Mqtt
             var numMessages = 3;
             var watch = new Stopwatch();
 
-            _mqtt.MessageReceived += (o, e) => {
+            _mqtt.MessageReceived += (o, e) =>
+            {
                 Log.Info($"{e.Topic}: {e.Message} after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
                 messages.Add(e.Message);
             };
@@ -101,7 +100,8 @@ namespace MSTests.Services.Mqtt
             var buffer = 5;
             var watch = new Stopwatch();
 
-            _mqtt.MessageReceived += (o, e) => {
+            _mqtt.MessageReceived += (o, e) =>
+            {
 
                 var device = _devices.FirstOrNew(e.Topic, out bool created);
                 if (created)
@@ -135,7 +135,7 @@ namespace MSTests.Services.Mqtt
         private async Task ConnectAsync()
         {
             Log.Info($"Connecting with {_config.ToString()}", Sources.Mqtt);
-            
+
             // act
             await _mqtt.ConnectAsync();
         }
@@ -145,7 +145,8 @@ namespace MSTests.Services.Mqtt
             Log.Info($"Disconnecting from {_config.ToString()}", Sources.Mqtt);
 
             // act
-            await _mqtt.DisconnectAsync().ContinueWith((task) => {
+            await _mqtt.DisconnectAsync().ContinueWith((task) =>
+            {
                 _isConnected = false;
             });
         }

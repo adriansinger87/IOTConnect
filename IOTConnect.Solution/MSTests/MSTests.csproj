@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IOTConnect.Application\IOTConnect.Application.csproj" />
     <ProjectReference Include="..\IOTConnect.Domain\IOTConnect.Domain.csproj" />
     <ProjectReference Include="..\IOTConnect.Persistence\IOTConnect.Persistence.csproj" />
     <ProjectReference Include="..\IOTConnect.Services\IOTConnect.Services.csproj" />

@@ -2,8 +2,6 @@
 using NLog;
 using NLog.Layouts;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MSTests.Persistence
 {

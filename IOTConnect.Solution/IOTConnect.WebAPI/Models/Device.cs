@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 
 namespace IOTConnect.WebAPI.Models
 {
+    // TODO @ AP remove obsolete classes ans use implementations from application layer
+    [Obsolete]
     public class Device
     {
     
@@ -14,6 +16,8 @@ namespace IOTConnect.WebAPI.Models
 
         public string Timestamp { get; set; }
 
+        // TODO @ AP: die Benennung einer Property sollte auch einen Wert widerspiegeln und nicht zwei
+        // zur Vermeidung der Wiederholung des Klassennamens beim Typ DateTime wird häufig "Timestamp" als Name der Eigenschaft genommen 
         public DateTime DateAndTime { get { return DateTime.Parse(Timestamp); } }
 
     }
