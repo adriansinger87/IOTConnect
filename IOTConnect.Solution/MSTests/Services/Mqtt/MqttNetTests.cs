@@ -109,6 +109,7 @@ namespace MSTests.Services.Mqtt
                     device.ClearData(buffer);
                     _devices.Add(device);
                 }
+                //e.Deserialize<>()//ToDo Delete
 
                 var state = e.Deserialize<ValueState>(new ValueStateAdapter());
                 device.Data.Add(state);

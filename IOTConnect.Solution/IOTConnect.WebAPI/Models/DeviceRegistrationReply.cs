@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace IOTConnect.WebAPI.Models
 {
-    public class SensorRegistrationReply
+    public class DeviceRegistrationReply
     {
         String iD;
 

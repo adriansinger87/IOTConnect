@@ -38,7 +38,7 @@ namespace MSTests.Persistence
                 Delimiter = CsvColumnDelimiterMode.Custom,
                 CustomColumnDelimiter = " | ",
                 Quoting = CsvQuotingMode.Nothing,
-            }; ;
+            };
 
             config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
 

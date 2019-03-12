@@ -5,26 +5,29 @@ using System.Threading.Tasks;
 
 namespace IOTConnect.WebAPI.Models
 {
-    public class SensorRegistration
+    public class DeviceRegistration
     {
-        List<Sensor> sensorList;
-        static SensorRegistration senreg = null;
+        List<Device> sensorList;
+        static DeviceRegistration senreg = null;
 
-        private SensorRegistration ()
+        private DeviceRegistration ()
         {
-            sensorList = new List<Sensor>();
+            sensorList = new List<Device>();
         }
 
         /*
          * TODO @ AP: singleton pattern bitte verwerfen und durch eine nicht statische Instanz ersetzen. Diese z.B. in einer Session verwalten
          * Hintergrund: static fields werden von allen clients geteilt, die die Seite aufrufen, das führt bei Mehrfachzugriff auf die Seite zu ungewolltem Verhalten
          */
-
-        public static SensorRegistration getInstance()
+         /*
+          * TODO @ AP: use DeviceBase, Circularbuffer from IOTConnect.Domain
+          */
+          //TODO @ AP: Add Session to Startup.cs
+        public static DeviceRegistration getInstance()
         {
             if (senreg == null)
             {
-                senreg = new SensorRegistration();
+                senreg = new DeviceRegistration();
                 return senreg;
             }
 
@@ -34,7 +37,7 @@ namespace IOTConnect.WebAPI.Models
             }
         }
 
-        public void Add (Sensor sensor)
+        public void Add (Device sensor)
         {
             sensorList.Add(sensor);
         }
@@ -43,7 +46,7 @@ namespace IOTConnect.WebAPI.Models
         {
             for (int i = 0; i < sensorList.Count; i++)
             {
-                Sensor sensorN = sensorList.ElementAt(i);
+                Device sensorN = sensorList.ElementAt(i);
                 if(sensorN.ID.Equals(iD))
                 {
                     sensorList.RemoveAt(i);
@@ -53,16 +56,16 @@ namespace IOTConnect.WebAPI.Models
             return "Delete un-succesfull";
         }
 
-        public List<Sensor> getAllSensors()
+        public List<Device> getAllSensors()
         {
             return sensorList;
         }
 
-        public String UpdateSensor (Sensor sen)
+        public String UpdateSensor (Device sen)
         {
             for (int i = 0; i < sensorList.Count; i++)
             {
-                Sensor senN = sensorList.ElementAt(i);
+                Device senN = sensorList.ElementAt(i);
                 if(senN.ID.Equals(sen.ID))
                 {
                     sensorList[i] = sen;

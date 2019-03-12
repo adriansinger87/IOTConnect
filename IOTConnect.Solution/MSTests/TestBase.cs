@@ -39,7 +39,6 @@ namespace MSTests
         {
             var fs = new FileSettings
             {
-                // TODO @ AS add empty config to gihub
                 Location = Path.Combine(Environment.CurrentDirectory, @"Test_Data"),
                 Name = "enilink-config.json"
             };
