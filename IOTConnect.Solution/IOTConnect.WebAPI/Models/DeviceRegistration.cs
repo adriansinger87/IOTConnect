@@ -11,6 +11,7 @@ namespace IOTConnect.WebAPI.Models
         List<Device> sensorList;
         static DeviceRegistration senreg = null;
 
+
         private DeviceRegistration ()
         {
             sensorList = new List<Device>();
