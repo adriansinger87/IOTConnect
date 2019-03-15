@@ -32,13 +32,16 @@ namespace IOTConnect.WebAPI
  
             });
 
-            //hinzufügen mvc
+            //adds mvc
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            //Used as memory storage for session
+            services.AddDistributedMemoryCache();
 
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(10);
-                options.CookieHttpOnly = true;
+                options.Cookie.HttpOnly = true;
             });
         }
 
@@ -51,6 +54,7 @@ namespace IOTConnect.WebAPI
             }
             else
             {
+                app.UseSession();
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }

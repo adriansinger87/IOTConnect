@@ -1,8 +1,10 @@
-﻿using IOTConnect.Domain.System.Logging;
+﻿using IOTConnect.Application.Devices;
+using IOTConnect.Domain.System.Logging;
 using IOTConnect.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace IOTConnect.WebAPI.Controllers.Api
 {
@@ -13,16 +15,27 @@ namespace IOTConnect.WebAPI.Controllers.Api
      * - Plural (Sensors) deshalb, da die Ressource serverseitig eine Liste ist. Der Zugriff per Get auf einen Sensor geht dann mittels "Sensors/{id}"
      * -> Diese Schreibweise ist eine Art best practise, wenn es um RESTful Web-APIs geht.
      */
+
+
     [Route("api/[controller]")]
     [ApiController]
     public class DevicesController : ControllerBase
     {
+
         // GET: api/Sensors
         [HttpGet]
         public IEnumerable<string> Get()
         {
+
             return new string[] { "value1", "value2" };
         }
+
+        [HttpGet("GetSensorList")]
+        public List<SensorDevice> GetSensorList()
+        {
+            return SensorDevicesModel.;    
+        }
+
 
         // GET: api/Sensors/5
         [HttpGet("{id}", Name = "Get")]
@@ -30,13 +43,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
         {
             return "value";
         }
-
-        // GET api/<controller>/5
-        //[HttpGet("GetAllSensorRecords")]
-        //public JsonResult GetAllSensorRecords()
-        //{
-        //    return Json(SensorRegistration.getInstance().getAllSensors());
-        //}
+ 
 
         // POST: api/Sensors
         [HttpPost]
@@ -44,52 +51,6 @@ namespace IOTConnect.WebAPI.Controllers.Api
         {
         }
 
-        [HttpPost]
-        public DeviceRegistrationReply RegisterSensor(Device sensorreg)
-        {
-            Log.Info("In registerSensor");
-            DeviceRegistrationReply senregreply = new DeviceRegistrationReply();
-            DeviceRegistration.getInstance().Add(sensorreg);
-            senregreply.ID = sensorreg.ID;
-            senregreply.Name = sensorreg.Name;
-            senregreply.Timestamp = sensorreg.DateAndTime.Millisecond;
-            senregreply.SensorValue = sensorreg.SensorValue;
-            senregreply.RegistrationStatus = "Succesfull";
-
-            return senregreply;
-        }
-
-        [HttpPost("InsertSensor")]
-        public IActionResult InsertSensors(Device sensorreg)
-        {
-            Log.Info("In registerSensor");
-            DeviceRegistrationReply senregreply = new DeviceRegistrationReply();
-            DeviceRegistration.getInstance().Add(sensorreg);
-            senregreply.ID = sensorreg.ID;
-            senregreply.Name = sensorreg.Name;
-            // senregreply.Timestamp = sensorreg.Timestamp;
-            senregreply.SensorValue = sensorreg.SensorValue;
-            senregreply.RegistrationStatus = "Succesfull";
-
-
-            return Ok(senregreply);
-        }
-
-        //[Route("sensor/")]
-        //[HttpPost("AddSensor")]
-        //public JsonResult AddSensor(Sensor sensorreg)
-        //{
-        //    Log.Info("In registerSensor");
-        //    SensorRegistrationReply senregreply = new SensorRegistrationReply();
-        //    SensorRegistration.getInstance().Add(sensorreg);
-        //    senregreply.ID = sensorreg.ID;
-        //    senregreply.Name = sensorreg.Name;
-        //    // senregreply.Timestamp = sensorreg.Timestamp;
-        //    senregreply.SensorValue = sensorreg.SensorValue;
-        //    senregreply.RegistrationStatus = "Succesfull";
-
-        //    return Json(senregreply);
-        //}
 
 
         // PUT: api/Sensors/5
@@ -98,11 +59,6 @@ namespace IOTConnect.WebAPI.Controllers.Api
         {
         }
 
-        //public JsonResult UpdateSensorRecord(Sensor sensorN)
-        //{
-        //    Log.Info("In updateSensorRecord");
-        //    return Json(SensorRegistration.getInstance().UpdateSensor(sensorN));
-        //}
 
 
         // DELETE: api/ApiWithActions/5
@@ -111,11 +67,5 @@ namespace IOTConnect.WebAPI.Controllers.Api
         {
         }
 
-        [HttpDelete]
-        public IActionResult DeleteSensorRecord(String sensorID)
-        {
-            Log.Info("In deleteSensorRecord");
-            return Ok(DeviceRegistration.getInstance().Remove(sensorID));
-        }
     }
 }
