@@ -26,7 +26,7 @@ namespace MSTests.Application
         {
             // arrange
             var num = 10;
-            var devicesRepo = new DevicesRepository();
+            var devicesRepo = new SensorsRepository();
 
             // act
             for (int i = 0; i < num; i++)

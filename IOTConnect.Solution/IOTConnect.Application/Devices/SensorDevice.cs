@@ -34,9 +34,14 @@ namespace IOTConnect.Application.Devices
 
         // -- methods
 
-        public void ClearData(int size = _defaultBuffer)
+        public override void ClearData()
         {
-            Data = new CircularBuffer<ValueState>(size);
+            ClearData(_defaultBuffer);
+        }
+
+        public override void ClearData(int buffer)
+        {
+            Data = new CircularBuffer<ValueState>(buffer);
         }
 
         public override string ToString()

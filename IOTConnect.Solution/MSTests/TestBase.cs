@@ -46,7 +46,7 @@ namespace MSTests
             var config = _io.Importer(ImportTypes.Json)
                 .Setup(fs)
                 .Import()
-                .ConvertWith<MqttConfig>(new JsonAdapter());
+                .ConvertWith<MqttConfig>(new JsonToObjectAdapter());
 
             if (topics != null)
             {

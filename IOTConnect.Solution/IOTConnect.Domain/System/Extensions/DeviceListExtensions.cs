@@ -8,21 +8,23 @@ namespace IOTConnect.Domain.System.Extensions
 {
     public static class DeviceListExtensions
     {
-        public static T FirstOrNew<T>(this List<T> list, string id, out bool created) where T : DeviceBase, new()
-        {
-            var device = list.FirstOrDefault(d => d.Id == id);
+        //public static T FirstOrNew<T>(this List<T> list, string id, out bool created) where T : IDevice, new()
+        //{
+        //    var device = list.FirstOrDefault(d => d.Id == id);
 
-            if (device != null)
-            {
-                created = false;
-                Type deviceType = typeof(T);
-                return (T)Convert.ChangeType(device, deviceType);
-            }
-            else
-            {
-                created = true;
-                return new T { Id = id };
-            }
-        }
+        //    if (device != null)
+        //    {
+        //        created = false;
+        //        Type deviceType = typeof(T);
+        //        return (T)Convert.ChangeType(device, deviceType);
+        //    }
+        //    else
+        //    {
+        //        created = true;
+        //        device = new T();
+        //        device.Id = id;
+        //        return device;
+        //    }
+        //}
     }
 }

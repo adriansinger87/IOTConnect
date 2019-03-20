@@ -20,19 +20,16 @@ namespace IOTConnect.Application.Values
 
         // -- methods
 
-        public override string ToString()
-        {
-            return $"t: {Time}, v: {Value}";
-        }
+        public override string ToString() => $"t: {Time}, v: {Value}";
 
         // -- properties
 
         [DataMember(Name = "value")]
         public object Value { get; set; }
 
-        public DateTime UtcTime { get { return _date; } }
+        public DateTime UtcTime => _date;
 
-        public DateTime LocalTime { get { return UtcTime.ToLocalTime(); } }
+        public DateTime LocalTime => UtcTime.ToLocalTime();
 
         [DataMember(Name = "timestamp")]
         public string Time

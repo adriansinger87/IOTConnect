@@ -9,7 +9,6 @@ namespace IOTConnect.WebAPI
     {
         public static void Main(string[] args)
         {
-
             Log.Inject(new NLogger());
 
             CreateWebHostBuilder(args).Build().Run();

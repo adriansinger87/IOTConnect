@@ -5,8 +5,13 @@ using System;
 
 namespace IOTConnect.Persistence.IO.Adapters
 {
-    public class ValueStateAdapter : IAdaptable
+    public class JsonToValueStateAdapter : IAdaptable
     {
+        public JsonToValueStateAdapter()
+        {
+
+        }
+
         public Tout Adapt<Tout, Tin>(Tin input) where Tout : new()
         {
             // type checks

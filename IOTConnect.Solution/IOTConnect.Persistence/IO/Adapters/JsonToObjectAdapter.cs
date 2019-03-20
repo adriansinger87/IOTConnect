@@ -6,8 +6,13 @@ using System.Text;
 
 namespace IOTConnect.Persistence.IO.Adapters
 {
-    public class JsonAdapter : IAdaptable
+    public class JsonToObjectAdapter : IAdaptable
     {
+        public JsonToObjectAdapter()
+        {
+
+        }
+
         public Tout Adapt<Tout, Tin>(Tin input) where Tout : new()
         {
             // type checks

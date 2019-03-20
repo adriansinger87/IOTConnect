@@ -3,11 +3,12 @@ using IOTConnect.Domain.Models.Repository;
 
 namespace IOTConnect.Application.Repository
 {
-    public class DevicesRepository : RepositoryBase<SensorDevice>
+    public class EnilinkRepository : RepositoryBase<EnilinkDevice>
     {
-        public DevicesRepository()
+        public EnilinkRepository()
         {
-            Name = "devices repository";
+            Name = "enilink repository";
         }
+
     }
 }

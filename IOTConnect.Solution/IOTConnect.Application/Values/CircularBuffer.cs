@@ -36,6 +36,14 @@ namespace IOTConnect.Application.Values
             }
         }
 
+        public void AddRange(T[] array)
+        {
+            foreach (var a in array)
+            {
+                Add(a);
+            }
+        }
+
         /// <summary>
         /// Liest das erste Element aus und entfernt es.
         /// </summary>
@@ -43,6 +51,15 @@ namespace IOTConnect.Application.Values
         public T Read()
         {
             return _queue.Dequeue();
+        }
+
+        /// <summary>
+        /// Copies the Queue into an array
+        /// </summary>
+        /// <returns>array of T</returns>
+        public T[] ToArray()
+        {
+            return _queue.ToArray();
         }
 
         public override string ToString()

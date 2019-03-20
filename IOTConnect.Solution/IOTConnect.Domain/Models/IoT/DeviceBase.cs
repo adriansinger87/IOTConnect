@@ -1,6 +1,6 @@
 ﻿namespace IOTConnect.Domain.Models.IoT
 {
-    public abstract class DeviceBase
+    public abstract class DeviceBase : IDevice
     {
 
         // -- constructors
@@ -12,8 +12,11 @@
 
         // -- methods
 
-        public override string ToString() => $"{Id}: {Name}";
+        public abstract void ClearData();
+        public abstract void ClearData(int buffer);
 
+        public override string ToString() => $"{Id}: {Name}";
+        
         // -- properties
 
         public string Id { get; set; }

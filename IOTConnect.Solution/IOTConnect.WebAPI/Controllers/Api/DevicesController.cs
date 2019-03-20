@@ -16,7 +16,6 @@ namespace IOTConnect.WebAPI.Controllers.Api
      * -> Diese Schreibweise ist eine Art best practise, wenn es um RESTful Web-APIs geht.
      */
 
-
     [Route("api/[controller]")]
     [ApiController]
     public class DevicesController : ControllerBase
@@ -30,12 +29,18 @@ namespace IOTConnect.WebAPI.Controllers.Api
             return new string[] { "value1", "value2" };
         }
 
-        [HttpGet("GetSensorList")]
-        public List<SensorDevice> GetSensorList()
-        {
-            return SensorDevicesModel.;    
-        }
-
+        /*
+         * HACK @ AP: Bitte IMMER vor jedem Push prüfen, ob die Projektmappe gebaut werden kann und ob die Tests alle durchlaufen.
+         * Sollte mal ein Test schief gehen ist das kein Problem, dann einfach einen Kommentar hinterlassen, dass man an der Sache dran ist.
+         * Es sollte nicht passieren, dass andere Team-Kollegen einen Pull machen und erstmal Syntax-Fehler bereinigen müssen und
+         * der Programmablauf nicht sichergestellt ist
+         * TODO @ AP: Bitte die Methode DevicesController.GetSensorList reparieren
+         */
+        //[HttpGet("GetSensorList")]
+        //public List<SensorDevice> GetSensorList()
+        //{
+        //    return SensorDevicesModel.;    
+        //}
 
         // GET: api/Sensors/5
         [HttpGet("{id}", Name = "Get")]

@@ -1,5 +1,7 @@
 ﻿using IOTConnect.Application.Devices;
+using IOTConnect.Application.Repository;
 using IOTConnect.Application.Values;
+using IOTConnect.Domain.IO;
 using IOTConnect.Domain.Models.IoT;
 using IOTConnect.Domain.Services.Mqtt;
 using IOTConnect.Domain.System.Extensions;
@@ -25,7 +27,7 @@ namespace MSTests.Services.Mqtt
 
         private int _duration = 30000;
 
-        private List<SensorDevice> _devices;
+        //private List<DeviceBase> _devices;
 
         // -- overrides
 
@@ -35,7 +37,7 @@ namespace MSTests.Services.Mqtt
             base.Arrange();
 
             _isConnected = false;
-            _devices = new List<SensorDevice>();
+            //_devices = new List<DeviceBase>();
 
             _config = base.GetEnilinkMqttConfig();
             //_config = base.GetHiveMQConfig();
@@ -90,10 +92,15 @@ namespace MSTests.Services.Mqtt
             Assert.IsTrue(messages.Count >= numMessages, $"topics shoud have sent {numMessages} messages");
         }
 
+        List<IDevice> _devices = new List<IDevice>();
+
         [TestMethod]
         public async Task ReadTopicData()
         {
             // arrange
+
+            var enilinkRepo = new EnilinkRepository();
+
             var valueStates = new List<ValueState>();
             var numValues = 10;
             var numDevices = _config.Topics.Count;
@@ -102,19 +109,32 @@ namespace MSTests.Services.Mqtt
 
             _mqtt.MessageReceived += (o, e) =>
             {
+                // TODO @ AS fix the test
 
-                var device = _devices.FirstOrNew(e.Topic, out bool created);
-                if (created)
+                if (e.Topic.StartsWith("LF/E"))
                 {
-                    device.ClearData(buffer);
-                    _devices.Add(device);
-                }
-                //e.Deserialize<>()//ToDo Delete
+                    var dev = enilinkRepo.FirstOrNew(x => x.Id == e.Topic, out bool created);
+                    if (created)
+                    {
+                        dev.Id = e.Topic;
+                    }
 
-                var state = e.Deserialize<ValueState>(new ValueStateAdapter());
-                device.Data.Add(state);
-                Log.Info($"{e.Topic}: data: {device.ToString()} after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
-                valueStates.Add(state);
+                    var properties = e.Deserialize<List<EnilinkDevice>>(new EnilinkToValueStateAdapter());
+                    dev.AppendProperties(properties);
+                }
+                else
+                {
+                    // M4.0 sensors
+                    var dev = new SensorDevice { Id = e.Topic };
+                    var value = e.Deserialize<ValueState>(new JsonToValueStateAdapter());
+
+                    dev.Data.Add(value);
+                    valueStates.Add(value);
+
+                    _devices.Add(dev);
+                }
+
+                //Log.Info($"{e.Topic}: data: {dev.ToString()} after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
             };
 
             // act
@@ -127,7 +147,6 @@ namespace MSTests.Services.Mqtt
             // assert
             Assert.IsTrue(_devices.Count >= numDevices, $"{numDevices} devices shoud have been received");
             Assert.IsTrue(valueStates.Count >= numValues, $"topics shoud have sent {numValues} messages");
-            Assert.IsTrue(_devices[0].Data.Count == buffer, $"The buffer of the device '{_devices[0].Id}' should be fully loaded");
         }
 
         // -- private methods

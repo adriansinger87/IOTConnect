@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace IOTConnect.Domain.Models.Repository
 {
     /// <summary>
     /// Base class to represent items in a list that a client code can use and add some properties related to that list
     /// </summary>
-    public abstract class RepositoryBase<T>
+    public abstract class RepositoryBase<T> where T : new()
     {
 
         // -- constructor
@@ -21,6 +21,23 @@ namespace IOTConnect.Domain.Models.Repository
         }
 
         // -- methods
+
+        public T FirstOrNew(Func<T, bool> predicate, out bool created)
+        {
+            var device = Items.FirstOrDefault(predicate);
+
+            if (device != null)
+            {
+                created = false;
+                return device;
+            }
+            else
+            {
+                created = true;
+                Items.Add(new T());
+                return Items.Last();
+            }
+        }
 
         /// <summary>
         /// overwritten method
