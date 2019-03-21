@@ -13,7 +13,6 @@
         // -- methods
 
         public abstract void ClearData();
-        public abstract void ClearData(int buffer);
 
         public override string ToString() => $"{Id}: {Name}";
         

@@ -35,7 +35,7 @@ namespace MSTests.Services.Mqtt
 
             _config = base.GetEnilinkMqttConfig();
 
-            _mqtt = new MqttNetController(); //new M2MqttController();
+            _mqtt = new MqttNetController();
             _mqtt.Connected += OnConnected;
             _mqtt.CreateClient(_config);
         }

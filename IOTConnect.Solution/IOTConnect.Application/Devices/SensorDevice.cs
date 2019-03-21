@@ -10,15 +10,15 @@ namespace IOTConnect.Application.Devices
 
         private const int _defaultBuffer = 1000;
 
+        private int _dataBuffer;
+
         // -- constructors
 
         /// <summary>
         /// Default constructor instanciates the Data property and sets a Guid as Id property
         /// </summary>
-        public SensorDevice() : base(Guid.NewGuid().ToString())
+        public SensorDevice() : this(Guid.NewGuid().ToString())
         {
-            Data = new CircularBuffer<ValueState>(_defaultBuffer);
-
         }
 
         /// <summary>
@@ -26,22 +26,17 @@ namespace IOTConnect.Application.Devices
         /// </summary>
         /// <param name="id"></param>
         /// <param name="dataBuffer"></param>
-        public SensorDevice(string id, int dataBuffer = _defaultBuffer) : this()
+        public SensorDevice(string id, int dataBuffer = _defaultBuffer) : base(id)
         {
-            base.Id = id;
-            ClearData(dataBuffer);
+            _dataBuffer = dataBuffer;
+            ClearData();
         }
 
         // -- methods
 
         public override void ClearData()
         {
-            ClearData(_defaultBuffer);
-        }
-
-        public override void ClearData(int buffer)
-        {
-            Data = new CircularBuffer<ValueState>(buffer);
+            Data = new CircularBuffer<ValueState>(_dataBuffer);
         }
 
         public override string ToString()

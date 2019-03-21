@@ -1,9 +1,6 @@
 ﻿using IOTConnect.Application.Values;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace IOTConnect.Application.Devices
 {
@@ -30,12 +27,10 @@ namespace IOTConnect.Application.Devices
                 var found = Properties.FirstOrDefault(x => x.Id == prop.Id);
                 if (found == null)
                 {
-                    // add new property
                     Properties.Add(prop);
                 }
                 else
                 {
-                    // append data to property
                     found.Data.AddRange(prop.Data.ToArray());
                 }
             }
@@ -50,7 +45,6 @@ namespace IOTConnect.Application.Devices
         public List<ValueState> GetAllValues(bool recursive = false)
         {
             List<ValueState> values = base.Data.ToArray().ToList();
-
             if (recursive && Properties.Count > 0)
             {
                 foreach (EnilinkDevice p in Properties)
@@ -58,7 +52,6 @@ namespace IOTConnect.Application.Devices
                     values.AddRange(p.GetAllValues(true));
                 }
             }
-            
             return values;
         }
 
