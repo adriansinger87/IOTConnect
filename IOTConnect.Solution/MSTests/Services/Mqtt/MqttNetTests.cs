@@ -1,17 +1,14 @@
 ﻿using IOTConnect.Application.Devices;
 using IOTConnect.Application.Repository;
 using IOTConnect.Application.Values;
-using IOTConnect.Domain.IO;
-using IOTConnect.Domain.Models.IoT;
 using IOTConnect.Domain.Services.Mqtt;
-using IOTConnect.Domain.System.Extensions;
 using IOTConnect.Domain.System.Logging;
+using IOTConnect.Persistence.IO;
 using IOTConnect.Persistence.IO.Adapters;
 using IOTConnect.Services.Mqtt;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MSTests.Services.Mqtt
@@ -25,9 +22,7 @@ namespace MSTests.Services.Mqtt
         private MqttConfig _config;
         private IMqttControlable _mqtt;
 
-        private int _duration = 30000;
-
-        //private List<DeviceBase> _devices;
+        private int _duration = 15000;
 
         // -- overrides
 
@@ -37,12 +32,10 @@ namespace MSTests.Services.Mqtt
             base.Arrange();
 
             _isConnected = false;
-            //_devices = new List<DeviceBase>();
 
             _config = base.GetEnilinkMqttConfig();
-            //_config = base.GetHiveMQConfig();
 
-            _mqtt = new MqttNetController();
+            _mqtt = new MqttNetController(); //new M2MqttController();
             _mqtt.Connected += OnConnected;
             _mqtt.CreateClient(_config);
         }
@@ -92,24 +85,21 @@ namespace MSTests.Services.Mqtt
             Assert.IsTrue(messages.Count >= numMessages, $"topics shoud have sent {numMessages} messages");
         }
 
-        List<IDevice> _devices = new List<IDevice>();
-
         [TestMethod]
         public async Task ReadTopicData()
         {
             // arrange
 
             var enilinkRepo = new EnilinkRepository();
+            var sensorsRepo = new SensorsRepository();
 
             var valueStates = new List<ValueState>();
-            var numValues = 10;
             var numDevices = _config.Topics.Count;
-            var buffer = 5;
             var watch = new Stopwatch();
 
             _mqtt.MessageReceived += (o, e) =>
             {
-                // TODO @ AS fix the test
+                Log.Info($"{e.Topic}: after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
 
                 if (e.Topic.StartsWith("LF/E"))
                 {
@@ -125,28 +115,32 @@ namespace MSTests.Services.Mqtt
                 else
                 {
                     // M4.0 sensors
-                    var dev = new SensorDevice { Id = e.Topic };
-                    var value = e.Deserialize<ValueState>(new JsonToValueStateAdapter());
-
+                    var dev = sensorsRepo.FirstOrNew(x => x.Id == e.Topic, out bool created);
+                    if (created)
+                    {
+                        dev.Id = e.Topic;
+                    }
+                    var value = e.Deserialize<ValueState>(new JsonToObjectAdapter());
                     dev.Data.Add(value);
-                    valueStates.Add(value);
-
-                    _devices.Add(dev);
                 }
-
-                //Log.Info($"{e.Topic}: data: {dev.ToString()} after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
             };
 
             // act
             await ConnectAsync();
 
             watch.Start();
-            while (valueStates.Count < numValues && watch.ElapsedMilliseconds < _duration) { }
+            while (watch.ElapsedMilliseconds < _duration) { }   // blocking function
+            watch.Stop();
             await DisconnectAsync();
 
+            var totalDevices = enilinkRepo.Count + sensorsRepo.Count;
+
+            var allValues = new List<ValueState>();
+            enilinkRepo.Items.ForEach(x => allValues.AddRange(x.GetAllValues(true)));
+            sensorsRepo.Items.ForEach(x => allValues.AddRange(x.Data.ToArray()));
+
             // assert
-            Assert.IsTrue(_devices.Count >= numDevices, $"{numDevices} devices shoud have been received");
-            Assert.IsTrue(valueStates.Count >= numValues, $"topics shoud have sent {numValues} messages");
+            Assert.IsTrue(totalDevices >= numDevices, $"{numDevices} devices shoud have been received");
         }
 
         // -- private methods

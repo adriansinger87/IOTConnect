@@ -28,7 +28,7 @@ namespace IOTConnect.Domain.System.Logging
         #region Trace
         public static void Trace(string msg, string src = null)
         {
-            L.Trace(ToMessage(msg, src));
+            L?.Trace(ToMessage(msg, src));
         }
 
         public static void Trace(string msg, object sender)
@@ -40,7 +40,7 @@ namespace IOTConnect.Domain.System.Logging
         #region Debug
         public static void Debug(string msg, string src = null)
         {
-            L.Debug(ToMessage(msg, src));
+            L?.Debug(ToMessage(msg, src));
         }
 
         public static void Debug(string msg, object sender)
@@ -52,7 +52,7 @@ namespace IOTConnect.Domain.System.Logging
         #region Info
         public static void Info(string msg, string src = null)
         {
-            L.Info(ToMessage(msg, src));
+            L?.Info(ToMessage(msg, src));
         }
 
         public static void Info(string msg, object sender)
@@ -64,7 +64,7 @@ namespace IOTConnect.Domain.System.Logging
         #region Warn
         public static void Warn(string msg, string src = null)
         {
-            L.Warn(ToMessage(msg, src));
+            L?.Warn(ToMessage(msg, src));
         }
 
         public static void Warn(string msg, object sender)
@@ -76,7 +76,7 @@ namespace IOTConnect.Domain.System.Logging
         #region Error
         public static void Error(string msg, string src = null)
         {
-            L.Error(ToMessage(msg, src));
+            L?.Error(ToMessage(msg, src));
         }
 
         public static void Error(string msg, object sender)
@@ -87,12 +87,12 @@ namespace IOTConnect.Domain.System.Logging
 
         public static void Fatal(Exception ex)
         {
-            L.Fatal(ex);
+            L?.Fatal(ex);
         }
 
         public static void Stop()
         {
-            L.Stop();
+            L?.Stop();
         }
 
         public static void Inject(ILoggable logger)

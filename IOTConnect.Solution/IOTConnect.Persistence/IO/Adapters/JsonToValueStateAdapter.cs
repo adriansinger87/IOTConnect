@@ -19,14 +19,14 @@ namespace IOTConnect.Persistence.IO.Adapters
             Type inType = typeof(Tin);
 
             if (typeof(ValueState).IsAssignableFrom(outType) == false ||
-                typeof(string).IsAssignableFrom(inType) == false)
+                typeof(object).IsAssignableFrom(inType) == false)
             {
                 Log.Error($"The casting assumes the type '{typeof(ValueState).Name}' but '{outType.Name}' was found.");
                 return new Tout();
             }
 
             // convert input, process and return output
-            string inputString = input as string;
+            string inputString = input.ToString();
             Tout output = JsonIO.FromJsonString<Tout>(inputString);
             return output;
         }

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="M2MqttDotnetCore" Version="1.0.8" />
     <PackageReference Include="MQTTnet" Version="2.8.5" />
   </ItemGroup>
 

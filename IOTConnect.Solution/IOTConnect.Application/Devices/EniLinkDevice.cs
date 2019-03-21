@@ -28,19 +28,39 @@ namespace IOTConnect.Application.Devices
             foreach (EnilinkDevice prop in properties)
             {
                 var found = Properties.FirstOrDefault(x => x.Id == prop.Id);
-
-                if (found != null)
+                if (found == null)
                 {
-                    found.Data.AddRange(found.Data.ToArray());
-                    found.AppendProperties(prop.Properties);
+                    // add new property
+                    Properties.Add(prop);
                 }
                 else
                 {
-                    Properties.Add(found);
+                    // append data to property
+                    found.Data.AddRange(prop.Data.ToArray());
                 }
             }
         }
 
+        /// <summary>
+        /// Returns the stored ValueState objects only from this instance or from the entire tree
+        /// </summary>
+        /// <param name="recursive">Defines if all Child nodes inside Properties are append their values to the returning list.
+        /// Default value is false, so that no recursive call arises</param>
+        /// <returns>returns a list of values</returns>
+        public List<ValueState> GetAllValues(bool recursive = false)
+        {
+            List<ValueState> values = base.Data.ToArray().ToList();
+
+            if (recursive && Properties.Count > 0)
+            {
+                foreach (EnilinkDevice p in Properties)
+                {
+                    values.AddRange(p.GetAllValues(true));
+                }
+            }
+            
+            return values;
+        }
 
         public override string ToString() => Id;
 

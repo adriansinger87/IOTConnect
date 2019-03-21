@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Runtime.Serialization;
 
 namespace IOTConnect.Application.Values
@@ -9,25 +10,55 @@ namespace IOTConnect.Application.Values
         // -- fields
 
         private string _time;
-        private DateTime _date;
 
         // -- constructor
 
         public ValueState()
         {
-            _date = new DateTime();
+            UtcTime = new DateTime();
         }
 
         // -- methods
 
-        public override string ToString() => $"t: {Time}, v: {Value}";
+        private void SetTime(string input)
+        {
+            // z.B. 2019-02-01T19:25:38.030Z
+            _time = input;
+            try
+            {
+                DateTime dateValue;
+                if (DateTime.TryParse(_time, out dateValue))
+                {
+                    UtcTime = dateValue;
+                }
+                else
+                {
+                    double milliseconds = DateTime.Now.Ticks;
+                    bool success = double.TryParse(_time, out milliseconds);
+                    if (success)
+                    {
+                        UtcTime = (new DateTime(1970, 1, 1)).AddMilliseconds(milliseconds);
+                    }
+                    else
+                    {
+                        UtcTime = DateTime.Now;
+                    }
+                }
+            }
+            catch
+            {
+                UtcTime = DateTime.Now;
+            }
+        }
+
+        public override string ToString() => $"t: {UtcTime}, v: {Value}";
 
         // -- properties
 
         [DataMember(Name = "value")]
         public object Value { get; set; }
 
-        public DateTime UtcTime => _date;
+        public DateTime UtcTime { get; private set; }
 
         public DateTime LocalTime => UtcTime.ToLocalTime();
 
@@ -35,24 +66,7 @@ namespace IOTConnect.Application.Values
         public string Time
         {
             get { return _time; }
-            set
-            {
-                // z.B. 2019-02-01T19:25:38.030Z
-                this._time = value;
-
-                DateTime result;
-                var success = DateTime.TryParse(value, null, global::System.Globalization.DateTimeStyles.RoundtripKind, out result);
-
-                if (success)
-                {
-                    _date = result;
-                }
-                else
-                {
-                    _date = DateTime.Now;
-                }
-
-            }
+            set { SetTime(value); }
         }
     }
 }

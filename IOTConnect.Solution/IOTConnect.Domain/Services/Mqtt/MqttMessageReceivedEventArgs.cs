@@ -18,6 +18,11 @@ namespace IOTConnect.Domain.Services.Mqtt
             Message = message;
         }
 
+        public T Deserialize<T>(Func<string, T> function) where T : new()
+        {
+            return function(Message);
+        }
+
         public T Deserialize<T>(IAdaptable adapter) where T : new()
         {
             return adapter.Adapt<T, string>(Message);
