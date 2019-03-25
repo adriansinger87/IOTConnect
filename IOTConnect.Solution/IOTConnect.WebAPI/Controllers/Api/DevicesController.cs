@@ -1,9 +1,19 @@
 ﻿using IOTConnect.Application.Devices;
+using IOTConnect.Application.Repository;
+using IOTConnect.Application.Values;
+using IOTConnect.Domain.IO;
+using IOTConnect.Domain.Services.Mqtt;
+using IOTConnect.Domain.System.Enumerations;
 using IOTConnect.Domain.System.Logging;
+using IOTConnect.Persistence.IO.Adapters;
+using IOTConnect.Persistence.IO.Settings;
+using IOTConnect.Services.Mqtt;
 using IOTConnect.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace IOTConnect.WebAPI.Controllers.Api
@@ -20,37 +30,98 @@ namespace IOTConnect.WebAPI.Controllers.Api
     [ApiController]
     public class DevicesController : ControllerBase
     {
+        private bool _isConnected;
+        private MqttConfig _config;
+        private IMqttControlable _mqtt;
+        private int _duration = 15000;
 
-        // GET: api/Sensors
+
+        // GET: api/devices
         [HttpGet]
         public IEnumerable<string> Get()
         {
 
-            return new string[] { "value1", "value2" };
+            return new string[] { "M40/Sensor0815", "M40/Sensor4711" };
         }
 
-        /*
-         * HACK @ AP: Bitte IMMER vor jedem Push prüfen, ob die Projektmappe gebaut werden kann und ob die Tests alle durchlaufen.
-         * Sollte mal ein Test schief gehen ist das kein Problem, dann einfach einen Kommentar hinterlassen, dass man an der Sache dran ist.
-         * Es sollte nicht passieren, dass andere Team-Kollegen einen Pull machen und erstmal Syntax-Fehler bereinigen müssen und
-         * der Programmablauf nicht sichergestellt ist
-         * TODO @ AP: Bitte die Methode DevicesController.GetSensorList reparieren
-         */
-        //[HttpGet("GetSensorList")]
-        //public List<SensorDevice> GetSensorList()
-        //{
-        //    return SensorDevicesModel.;    
-        //}
+        [HttpGet("GetSensorList")]
+        public List<SensorDevice> GetSensorList(MqttConfig _config)
+        {
+            _config.Broker = "linkedfactory.iwu.fraunhofer.de";
+            _config.Port = 8883;
+            _config.ClientID = "IOTConnectDemo";
+            _config.LasWill = $"Goodby from {_config.ClientID}";
+            _config.QoS = 0;
 
-        // GET: api/Sensors/5
+
+            List<string> Topics = new List<string>();
+            Topics.Add("M40/Sensor0815");
+            Topics.Add("M40/Sensor4711");
+            _config.Topics = Topics;
+            _mqtt = new MqttNetController();
+            _mqtt.CreateClient(_config);
+
+            var enilinkRepo = new EnilinkRepository();
+            var sensorsRepo = new SensorsRepository();
+
+            var valueStates = new List<ValueState>();
+            var numDevices = _config.Topics.Count;
+            var watch = new Stopwatch();
+
+            _mqtt.MessageReceived += (o, e) =>
+            {
+                Log.Info($"{e.Topic}: after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
+
+                if (e.Topic.StartsWith("LF/E"))
+                {
+                    var dev = enilinkRepo.FirstOrNew(x => x.Id == e.Topic, out bool created);
+                    if (created)
+                    {
+                        dev.Id = e.Topic;
+                    }
+
+                    var properties = e.Deserialize<List<EnilinkDevice>>(new EnilinkToValueStateAdapter());
+                    dev.AppendProperties(properties);
+                }
+                else
+                {
+                    // M4.0 sensors
+                    var dev = sensorsRepo.FirstOrNew(x => x.Id == e.Topic, out bool created);
+                    if (created)
+                    {
+                        dev.Id = e.Topic;
+                    }
+                    var value = e.Deserialize<ValueState>(new JsonToObjectAdapter());
+                    dev.Data.Add(value);
+                }
+            };
+
+           //await ConnectAsync();
+
+            watch.Start();
+            while (watch.ElapsedMilliseconds < _duration) { } 
+            watch.Stop();
+            //await DisconnectAsync();
+
+            var totalDevices = enilinkRepo.Count + sensorsRepo.Count;
+
+            var allValues = new List<ValueState>();
+            enilinkRepo.Items.ForEach(x => allValues.AddRange(x.GetAllValues(true)));
+            sensorsRepo.Items.ForEach(x => allValues.AddRange(x.Data.ToArray()));
+
+
+            return sensorsRepo.Items;
+        }
+
+        // GET: api/devices/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
-            return "value";
+            return $"value {id}";
         }
  
 
-        // POST: api/Sensors
+        // POST: api/devices
         [HttpPost]
         public void Post([FromBody] string value)
         {
@@ -58,7 +129,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
 
 
 
-        // PUT: api/Sensors/5
+        // PUT: api/devices/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
@@ -71,6 +142,5 @@ namespace IOTConnect.WebAPI.Controllers.Api
         public void Delete(int id)
         {
         }
-
     }
 }
