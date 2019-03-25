@@ -1,6 +1,7 @@
 ﻿using IOTConnect.Application;
 using IOTConnect.Application.Devices;
 using IOTConnect.Application.Values;
+using IOTConnect.Domain.Context;
 using IOTConnect.Domain.IO;
 using IOTConnect.Domain.Services.Mqtt;
 using IOTConnect.Domain.System.Enumerations;
@@ -28,7 +29,7 @@ namespace IOTConnect.WebAPI
 
         private IHostingEnvironment _env;
         private IMqttControlable _mqtt;
-        private IAppContainer _container;
+        private IContextable _context;
 
 
         public Startup(IConfiguration configuration)
@@ -65,16 +66,16 @@ namespace IOTConnect.WebAPI
 
             services.AddSingleton<IMqttControlable, MqttNetController>();
 
-            services.AddSingleton<IAppContainer, AppContainer>();
+            services.AddSingleton<IContextable, DataContext>();
 
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMqttControlable mqtt, IAppContainer container)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMqttControlable mqtt, IContextable context)
         {
             _env = env;
             _mqtt = mqtt;
-            _container = container;
+            _context = context;
 
             if (env.IsDevelopment())
             {
@@ -113,14 +114,16 @@ namespace IOTConnect.WebAPI
                 Log.Info($"Connected to {e.Broker} with id {e.ClientID}", Sources.Mqtt);
             };
 
-            _mqtt.MessageReceived += async (o, e) =>
+            _mqtt.MessageReceived += (o, e) =>
             {
                 Log.Trace($"{e.Topic}: {e.Message}", Sources.Mqtt);
+
+                var context = _context as DataContext;
 
                 if (e.Topic.StartsWith("LF/E"))
                 {
                     // Enilink
-                    var dev = _container.Enilink.FirstOrNew(x => x.Id == e.Topic, out bool created);
+                    var dev = context.Enilink.FirstOrNew(x => x.Id == e.Topic, out bool created);
                     if (created)
                     {
                         dev.Id = e.Topic;
@@ -132,7 +135,7 @@ namespace IOTConnect.WebAPI
                 else
                 {
                     // M4.0 sensors
-                    var dev = _container.Sensors.FirstOrNew(x => x.Id == e.Topic, out bool created);
+                    var dev = context.Sensors.FirstOrNew(x => x.Id == e.Topic, out bool created);
                     if (created)
                     {
                         dev.Id = e.Topic;
