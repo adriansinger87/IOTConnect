@@ -8,6 +8,9 @@ using uPLibrary.Networking.M2Mqtt.Messages;
 
 namespace IOTConnect.Services.Mqtt
 {
+    /// <summary>
+    /// HACK: do not use this instance in production
+    /// </summary>
     public class M2MqttController : IMqttControlable
     {
         private MqttClient _client;

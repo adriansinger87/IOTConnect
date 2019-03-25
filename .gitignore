@@ -333,3 +333,4 @@ ASALocalRun/
 /node-red/m40-mqtt-demo.json
 /IOTConnect.Solution/MSTests/Test_Data/enilink-config.json
 /IOTConnect.Solution/IOTConnect.WebAPI/wwwroot/lib/
+/IOTConnect.Solution/IOTConnect.WebAPI/App_Data
