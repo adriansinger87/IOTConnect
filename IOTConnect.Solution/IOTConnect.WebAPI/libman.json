@@ -35,6 +35,11 @@
         "dist/browser/signalr.min.js",
         "dist/browser/signalr.js"
       ]
+    },
+    {
+      "library": "vue@2.6.10",
+      "destination": "wwwroot/lib/vue",
+      "files": ["vue.min.js"]
     }
   ]
 }

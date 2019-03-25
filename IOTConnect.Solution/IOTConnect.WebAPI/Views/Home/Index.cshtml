@@ -1,8 +1,22 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
-@section Scripts {
+@section Scripts
+    {
     <script src="~/js/_home.js"></script>
 }
 
 <h1>Hello World</h1>
+
+<div id="app-vue" v-load>
+
+    <div v-if="devices != null" class="row">
+        <div v-for="dev in devices" class="col s12 m12 l6">
+            <span>{{ dev }}</span>
+        </div>
+    </div>
+    <div v-if="devices == null">
+        <h3 align="center" class="orange-text text-accent-2">keine Geräte geladen</h3>
+    </div>
+
+</div>

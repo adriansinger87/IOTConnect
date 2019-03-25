@@ -30,87 +30,22 @@ namespace IOTConnect.WebAPI.Controllers.Api
     [ApiController]
     public class DevicesController : ControllerBase
     {
-        private bool _isConnected;
-        private MqttConfig _config;
-        private IMqttControlable _mqtt;
-        private int _duration = 15000;
+        // -- fields
 
+        private IMqttControlable _mqtt;
+
+        // -- constructor
+
+        public DevicesController(IMqttControlable mqtt)
+        {
+            _mqtt = mqtt;
+        }
 
         // GET: api/devices
         [HttpGet]
         public IEnumerable<string> Get()
         {
-
-            return new string[] { "M40/Sensor0815", "M40/Sensor4711" };
-        }
-
-        [HttpGet("GetSensorList")]
-        public List<SensorDevice> GetSensorList(MqttConfig _config)
-        {
-            _config.Broker = "linkedfactory.iwu.fraunhofer.de";
-            _config.Port = 8883;
-            _config.ClientID = "IOTConnectDemo";
-            _config.LasWill = $"Goodby from {_config.ClientID}";
-            _config.QoS = 0;
-
-
-            List<string> Topics = new List<string>();
-            Topics.Add("M40/Sensor0815");
-            Topics.Add("M40/Sensor4711");
-            _config.Topics = Topics;
-            _mqtt = new MqttNetController();
-            _mqtt.CreateClient(_config);
-
-            var enilinkRepo = new EnilinkRepository();
-            var sensorsRepo = new SensorsRepository();
-
-            var valueStates = new List<ValueState>();
-            var numDevices = _config.Topics.Count;
-            var watch = new Stopwatch();
-
-            _mqtt.MessageReceived += (o, e) =>
-            {
-                Log.Info($"{e.Topic}: after {watch.ElapsedMilliseconds} ms", Sources.Mqtt);
-
-                if (e.Topic.StartsWith("LF/E"))
-                {
-                    var dev = enilinkRepo.FirstOrNew(x => x.Id == e.Topic, out bool created);
-                    if (created)
-                    {
-                        dev.Id = e.Topic;
-                    }
-
-                    var properties = e.Deserialize<List<EnilinkDevice>>(new EnilinkToValueStateAdapter());
-                    dev.AppendProperties(properties);
-                }
-                else
-                {
-                    // M4.0 sensors
-                    var dev = sensorsRepo.FirstOrNew(x => x.Id == e.Topic, out bool created);
-                    if (created)
-                    {
-                        dev.Id = e.Topic;
-                    }
-                    var value = e.Deserialize<ValueState>(new JsonToObjectAdapter());
-                    dev.Data.Add(value);
-                }
-            };
-
-           //await ConnectAsync();
-
-            watch.Start();
-            while (watch.ElapsedMilliseconds < _duration) { } 
-            watch.Stop();
-            //await DisconnectAsync();
-
-            var totalDevices = enilinkRepo.Count + sensorsRepo.Count;
-
-            var allValues = new List<ValueState>();
-            enilinkRepo.Items.ForEach(x => allValues.AddRange(x.GetAllValues(true)));
-            sensorsRepo.Items.ForEach(x => allValues.AddRange(x.Data.ToArray()));
-
-
-            return sensorsRepo.Items;
+            return (_mqtt.Config as MqttConfig).Topics;
         }
 
         // GET: api/devices/5
@@ -119,24 +54,19 @@ namespace IOTConnect.WebAPI.Controllers.Api
         {
             return $"value {id}";
         }
- 
 
         // POST: api/devices
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
-
-
-
+        
         // PUT: api/devices/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
-
-
-
+        
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
