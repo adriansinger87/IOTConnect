@@ -1,0 +1,49 @@
+﻿<div class="navbar-fixed">
+    <ul id="nav-dropdaown" class="dropdown-content" style="min-width:200px;">
+        <li>
+            <a href="~/home">
+                <i class="mdi mdi-inline mdi-calendar-clock"></i>
+                <span>Aufgaben</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="grey-text">
+                <i class="mdi mdi-inline mdi-chart-areaspline"></i>
+                <span>Statistik</span>
+            </a>
+        </li>
+        <li>
+            <a href="#" class="grey-text">
+                <i class="mdi mdi-inline mdi-account-edit"></i>
+                <span>Einstellungen</span>
+            </a>
+        </li>
+        <li class="separator"></li>
+        <li>
+            <a id="download-jobs-link" href="#">
+                <i class="mdi mdi-file-download-outline"></i>
+                <span>Archivieren</span>
+            </a>
+        </li>
+    </ul>
+    <nav class="blue-grey darken-1">
+        <div class="nav-wrapper container">
+            <a class="brand-logo left">
+                <img class="site-logo" src="~/images/m40kc.svg" />@ViewBag.AppTitle
+            </a>
+            <ul class="right">
+                <li>
+                    <a id="refresh-jobs-btn" class="waves-effect waves-light">
+                        <i class="mdi mdi-refresh"></i>
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-trigger" href="#!" data-target="nav-dropdaown">
+                        <i class="mdi mdi-dots-vertical"></i>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</div>
