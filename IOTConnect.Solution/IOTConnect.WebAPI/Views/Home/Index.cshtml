@@ -1,8 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
-@section Scripts
-    {
+
+@section Scripts {
     <script src="~/js/_home.js"></script>
 }
 
@@ -10,7 +10,7 @@
 
 <div id="app-vue" v-load>
 
-    <div v-if="devices != null" class="row">
+    <div v-if="devices" class="row">
         <div v-for="dev in devices" class="col s12 m12 l6">
             <span>{{ dev }}</span>
         </div>

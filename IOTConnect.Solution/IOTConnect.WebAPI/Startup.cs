@@ -1,4 +1,7 @@
-﻿using IOTConnect.Domain.IO;
+﻿using IOTConnect.Application;
+using IOTConnect.Application.Devices;
+using IOTConnect.Application.Values;
+using IOTConnect.Domain.IO;
 using IOTConnect.Domain.Services.Mqtt;
 using IOTConnect.Domain.System.Enumerations;
 using IOTConnect.Domain.System.Logging;
@@ -11,10 +14,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace IOTConnect.WebAPI
@@ -24,6 +27,9 @@ namespace IOTConnect.WebAPI
         // -- fields
 
         private IHostingEnvironment _env;
+        private IMqttControlable _mqtt;
+        private IAppContainer _container;
+
 
         public Startup(IConfiguration configuration)
         {
@@ -59,12 +65,16 @@ namespace IOTConnect.WebAPI
 
             services.AddSingleton<IMqttControlable, MqttNetController>();
 
+            services.AddSingleton<IAppContainer, AppContainer>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMqttControlable mqtt)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMqttControlable mqtt, IAppContainer container)
         {
             _env = env;
+            _mqtt = mqtt;
+            _container = container;
 
             if (env.IsDevelopment())
             {
@@ -93,47 +103,48 @@ namespace IOTConnect.WebAPI
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            ConfigureMqtt(mqtt);
+            ConfigureMqtt();
         }
 
-        private void ConfigureMqtt(IMqttControlable mqtt)
+        private void ConfigureMqtt()
         {
-            mqtt.Connected += (o, e) =>
+            _mqtt.Connected += (o, e) =>
             {
                 Log.Info($"Connected to {e.Broker} with id {e.ClientID}", Sources.Mqtt);
             };
 
-            mqtt.MessageReceived += async (o, e) =>
+            _mqtt.MessageReceived += async (o, e) =>
             {
-                Log.Info($"{e.Topic}: {e.Message}", Sources.Mqtt);
+                Log.Trace($"{e.Topic}: {e.Message}", Sources.Mqtt);
 
-                //if (e.Topic.StartsWith("LF/E"))
-                //{
-                //    var dev = enilinkRepo.FirstOrNew(x => x.Id == e.Topic, out bool created);
-                //    if (created)
-                //    {
-                //        dev.Id = e.Topic;
-                //    }
+                if (e.Topic.StartsWith("LF/E"))
+                {
+                    // Enilink
+                    var dev = _container.Enilink.FirstOrNew(x => x.Id == e.Topic, out bool created);
+                    if (created)
+                    {
+                        dev.Id = e.Topic;
+                    }
 
-                //    var properties = e.Deserialize<List<EnilinkDevice>>(new EnilinkToValueStateAdapter());
-                //    dev.AppendProperties(properties);
-                //}
-                //else
-                //{
-                //    // M4.0 sensors
-                //    var dev = sensorsRepo.FirstOrNew(x => x.Id == e.Topic, out bool created);
-                //    if (created)
-                //    {
-                //        dev.Id = e.Topic;
-                //    }
-                //    var value = e.Deserialize<ValueState>(new JsonToObjectAdapter());
-                //    dev.Data.Add(value);
-                //}
+                    var properties = e.Deserialize<List<EnilinkDevice>>(new EnilinkToValueStateAdapter());
+                    dev.AppendProperties(properties);
+                }
+                else
+                {
+                    // M4.0 sensors
+                    var dev = _container.Sensors.FirstOrNew(x => x.Id == e.Topic, out bool created);
+                    if (created)
+                    {
+                        dev.Id = e.Topic;
+                    }
+                    var value = e.Deserialize<ValueState>(new JsonToObjectAdapter());
+                    dev.Data.Add(value);
+                }
             };
 
-            if (mqtt.CreateClient(GetConfig()))
+            if (_mqtt.CreateClient(GetConfig()))
             {
-                mqtt.ConnectAsync();
+                _mqtt.ConnectAsync();
             }
             else
             {

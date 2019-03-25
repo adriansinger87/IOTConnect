@@ -1,4 +1,5 @@
-﻿using IOTConnect.Application.Devices;
+﻿using IOTConnect.Application;
+using IOTConnect.Application.Devices;
 using IOTConnect.Application.Repository;
 using IOTConnect.Application.Values;
 using IOTConnect.Domain.IO;
@@ -33,19 +34,22 @@ namespace IOTConnect.WebAPI.Controllers.Api
         // -- fields
 
         private IMqttControlable _mqtt;
+        private IAppContainer _container;
 
         // -- constructor
 
-        public DevicesController(IMqttControlable mqtt)
+        public DevicesController(IMqttControlable mqtt, IAppContainer container)
         {
             _mqtt = mqtt;
+            _container = container;
         }
 
         // GET: api/devices
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return (_mqtt.Config as MqttConfig).Topics;
+            var list = _container.GetAllDevices();
+            return list;
         }
 
         // GET: api/devices/5

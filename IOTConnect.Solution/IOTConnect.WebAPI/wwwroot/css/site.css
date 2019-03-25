@@ -28,6 +28,14 @@ i {
 
 /* END Materialize CSS overrides */
 
+/* BEGIN vue.js */
+
+[v-load] {
+    display: none;
+}
+
+/* END vue.js */
+
 .separator {
     min-height: 1px !important;
     display: block;
