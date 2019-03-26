@@ -39,7 +39,20 @@
     {
       "library": "vue@2.6.10",
       "destination": "wwwroot/lib/vue",
-      "files": ["vue.min.js"]
+      "files": [ "vue.min.js" ]
+    },
+    {
+      "library": "d3@5.9.2",
+      "destination": "wwwroot/lib/d3",
+      "files": [ "d3.min.js" ]
+    },
+    {
+      "library": "c3@0.6.13",
+      "destination": "wwwroot/lib/c3",
+      "files": [
+        "c3.min.js",
+        "c3.min.css"
+      ]
     }
   ]
 }

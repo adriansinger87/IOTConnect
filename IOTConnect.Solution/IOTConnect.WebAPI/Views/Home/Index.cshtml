@@ -1,10 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Home";
 }
-
+@* TODO @ ap conntection to the js-files should be done by the manager*@
 @section Scripts {
+    <script src="~/lib/d3/d3.min.js"></script>
+    <script src="~/lib/c3/c3.min.js"></script>
     <script src="~/js/_home.js"></script>
 }
+<link href="~/lib/c3/c3.min.css" rel="stylesheet">
 
 <h1>Hello World</h1>
 
@@ -19,4 +22,8 @@
         <h3 align="center" class="orange-text text-accent-2">keine Geräte geladen</h3>
     </div>
 
+</div>
+
+<div id="app-vue2" v-load>
+        <div id="chart"></div>
 </div>
