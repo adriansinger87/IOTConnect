@@ -17,7 +17,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
 
         // -- constructor
 
-        public DevicesController(IMqttControlable mqtt, IContextable context)
+        public DevicesController(IContextable context)
         {
             _context = context;
         }
@@ -26,12 +26,22 @@ namespace IOTConnect.WebAPI.Controllers.Api
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            var list = _context.GetAllRessources();
+            var list = _context.GetAllResources();
             return list;
         }
 
+        // GET: api/devices/item?id=...
+        [HttpGet(Name = "GetItem")]
+        [Route("item")]
+        public JsonResult Item([FromQuery(Name = "id")] string id)
+        {
+            var item = _context.GetResource(id, out bool found);
+            return new JsonResult(item);
+        }
+
         // GET: api/devices/data?id=...
-        [HttpGet("{id}", Name = "data")]
+        [HttpGet(Name = "GetData")]
+        [Route("data")]
         public object[] Data([FromQuery(Name = "id")] string id)
         {
             /*

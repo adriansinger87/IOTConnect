@@ -1,9 +1,8 @@
-﻿using System;
+﻿using IOTConnect.Application.Repository;
+using IOTConnect.Domain.Context;
+using IOTConnect.Domain.Models.IoT;
 using System.Collections.Generic;
 using System.Linq;
-using IOTConnect.Application.Repository;
-using IOTConnect.Domain.Context;
-using IOTConnect.Domain.Models;
 
 namespace IOTConnect.Application
 {
@@ -20,7 +19,7 @@ namespace IOTConnect.Application
 
         // -- methods
 
-        public List<string> GetAllRessources()
+        public List<string> GetAllResources()
         {
             var list = new List<string>();
 
@@ -32,20 +31,41 @@ namespace IOTConnect.Application
 
         public object[] GetData(string id)
         {
-            if (Sensors.Items.Any(x => x.Id == id))
+            IDevice dev = GetResource(id, out bool found);
+
+            if (found)
             {
-                return Sensors.Items.First(x => x.Id == id).Data.ToArray();
-            }
-            else if (Enilink.Items.Any(x => x.Id == id))
-            {
-                return Enilink.Items.First(x => x.Id == id).Data.ToArray();
+                return dev.GetData();
             }
             else
             {
                 return new object[] { };
             }
         }
-        
+
+        public IDevice GetResource(string id, out bool found)
+        {
+            DeviceBase item = null;
+            found = false;
+
+            // select item by id
+            if (Sensors.Items.Any(x => x.Id == id))
+            {
+                item = Sensors.Items.First(x => x.Id == id);
+            }
+            else if (Enilink.Items.Any(x => x.Id == id))
+            {
+                item = Enilink.Items.First(x => x.Id == id);
+            }
+
+            // result
+            if (item != null)
+            {
+                found = true;
+            }
+            return item;
+        }
+
         // -- properties
 
         public SensorsRepository Sensors { get; private set; }

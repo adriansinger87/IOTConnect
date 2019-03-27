@@ -2,9 +2,11 @@
 
     var appVue = getAppVue();
     var appVue2 = getAppVue2();
+
     initActions();
  
     console.info("_home.js done");
+
     // -- functions
 
     function initActions() {
@@ -53,7 +55,7 @@
         var timeArray = [];
         var valuesArray = [];
         //TODO @ ap  connect to real data
-        if (jsonData == null) {
+        if (jsonData === null) {
             values = [
                 {
                     "t": "2019-03-26T16:11:28.033+01:00",

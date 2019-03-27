@@ -14,6 +14,8 @@
 
         public abstract void ClearData();
 
+        public abstract object[] GetData();
+
         public override string ToString() => $"{Id}: {Name}";
         
         // -- properties
