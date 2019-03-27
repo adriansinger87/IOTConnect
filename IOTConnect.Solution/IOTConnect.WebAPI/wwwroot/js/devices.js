@@ -20,7 +20,7 @@
             .build();
 
          /*TODO @ AS still on browser reload or by having more then on browser 
-         * opend data from signalr is written multiple times in the array for the chart */
+         * opend data from signalr is written multiple times in the array for the chart*/
 
         connection.on("MqttReceived", function (topic, message) {
             //console.log(topic, message);
