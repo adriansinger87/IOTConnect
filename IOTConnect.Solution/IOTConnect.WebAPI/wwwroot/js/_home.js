@@ -46,22 +46,22 @@
         });
     }
 
-    function getSenor0815() {
-        $.ajax({
-            url: "/api/devices/data?id=M40/Sensor0815",
-            type: 'GET',
-            contentType: "application/json; charset=utf-8",
-            datatype: 'json',
-            async: true,
-            error: function (result) {
-                console.error(result);
-            },
-            success: function (result) {
-                console.info(result);
-                appVue2.jsonData = result;
-            }
-        });
-    }
+    //function getSenor0815() {
+    //    $.ajax({
+    //        url: "/api/devices/data?id=M40/Sensor0815",
+    //        type: 'GET',
+    //        contentType: "application/json; charset=utf-8",
+    //        datatype: 'json',
+    //        async: true,
+    //        error: function (result) {
+    //            console.error(result);
+    //        },
+    //        success: function (result) {
+    //            console.info(result);
+    //            appVue2.jsonData = result;
+    //        }
+    //    });
+    //}
 
 
 });

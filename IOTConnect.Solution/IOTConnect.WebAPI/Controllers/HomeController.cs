@@ -22,11 +22,14 @@ namespace IOTConnect.WebAPI.Controllers
             _mqtt = mqtt;
             _hubcontext = hubcontext;
 
-            _mqtt.MessageReceived += (o, e) =>
-            {
-                //Log.Trace("");
-                _hubcontext.Clients.All.SendAsync("MqttReceived", e.Topic, e.Message);
-            }; 
+            _mqtt.MessageReceived -= OnMqttEvent;
+            _mqtt.MessageReceived += OnMqttEvent;
+        }
+
+
+        private void OnMqttEvent(object sender, MqttReceivedEventArgs e)
+        {
+            _hubcontext.Clients.All.SendAsync("MqttReceived", e.Topic, e.Message);
         }
 
         public IActionResult Index()
@@ -54,5 +57,7 @@ namespace IOTConnect.WebAPI.Controllers
 
             ViewBag.Version = version;
         }
+
+     
     }
 }

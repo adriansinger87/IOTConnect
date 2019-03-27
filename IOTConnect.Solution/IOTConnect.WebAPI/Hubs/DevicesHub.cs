@@ -18,18 +18,18 @@ namespace IOTConnect.WebAPI.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task SendMessage(string topic, string message)
-        {
-            if (Clients != null &&
-                Clients.All != null)
-            {
-                await Clients.All.SendAsync("MqttReceived", topic, message);
-            }
-            else 
-            {
-                return;
-            }
+        //public async Task SendMessage(string topic, string message)
+        //{
+        //    if (Clients != null &&
+        //        Clients.All != null)
+        //    {
+        //        await Clients.All.SendAsync("MqttReceived", topic, message);
+        //    }
+        //    else 
+        //    {
+        //        return;
+        //    }
             
-        }
+        //}
     }
 }
