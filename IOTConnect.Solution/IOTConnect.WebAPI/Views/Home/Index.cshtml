@@ -9,15 +9,12 @@
 }
 <link href="~/lib/c3/c3.min.css" rel="stylesheet">
 
-<h1>Hello World</h1>
-
+<h3>Dashboard</h3>
 <div id="app-vue" v-load>
-
-    <div v-if="devices" class="row">
-        <div v-for="dev in devices" class="col s12 m12 l6">
-            <span>{{ dev }}</span>
-        </div>
-    </div>
+    <select v-if="devices" class="browser-default" id="selection">
+        <option value="" disabled selected>Choose an device</option>
+        <option v-for="dev in devices">{{ dev }}</option>
+    </select>
     <div v-if="devices == null">
         <h3 align="center" class="orange-text text-accent-2">keine Geräte geladen</h3>
     </div>
@@ -25,5 +22,5 @@
 </div>
 
 <div id="app-vue2" v-load>
-        <div id="chart"></div>
+    <div id="chart"></div>
 </div>
