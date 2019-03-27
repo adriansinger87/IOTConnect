@@ -39,10 +39,12 @@ namespace IOTConnect.Application.Devices
             Data = new CircularBuffer<ValueState>(_dataBuffer);
         }
 
-        public override string ToString()
+        public override object[] GetData()
         {
-            return $"{base.ToString()} last value: {Data?.Peek?.Value ?? "N/A"}";
+            return Data.ToArray();
         }
+
+        public override string ToString() => $"{base.ToString()} last value: {Data?.Peek?.Value ?? "N/A"}";
 
         // -- properties
 
