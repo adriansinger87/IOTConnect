@@ -32,7 +32,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
         }
 
         // GET: api/devices/item?id=...
-        [HttpGet(Name = "GetItem")]
+        [HttpGet("{id}", Name = "GetItem")]
         [Route("item")]
         public JsonResult Item([FromQuery(Name = "id")] string id)
         {
@@ -41,7 +41,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
         }
 
         // GET: api/devices/data?id=...
-        [HttpGet(Name = "GetData")]
+        [HttpGet("{id}", Name = "GetData")]
         [Route("data")]
         public object[] Data([FromQuery(Name = "id")] string id)
         {

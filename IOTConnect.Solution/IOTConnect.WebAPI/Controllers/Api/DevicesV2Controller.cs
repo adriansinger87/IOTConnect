@@ -26,18 +26,20 @@ namespace IOTConnect.WebAPI.Controllers.Api
         }
 
         // GET: api/devices/item?id=...
-        [HttpGet]
+        [HttpGet(Name = "GetDataV2")]
         [Route("item")]
-        public JsonResult Item([FromQuery(Name = "id")] string id, [FromQuery(Name = "limit")] int limit)
+        public JsonResult Item([FromQuery(Name = "id")] string id, [FromQuery(Name = "limit")] int limit = 1)
         {
             var item = _context.GetResource(id, out bool found);
 
-            var viewModel = new
+            dynamic viewModel = new ExpandoObject();
+            if (found)
             {
-                id = item.Id,
-                name = item.Name,
-                data = item.GetData().Reverse().Take(limit)
-            };
+                viewModel.id = item.Id;
+                viewModel.name = item.Name;
+                viewModel.count = item.GetData().Length;
+                viewModel.data = item.GetData().Reverse().Take(limit);
+            }
 
             return new JsonResult(viewModel);
         }
