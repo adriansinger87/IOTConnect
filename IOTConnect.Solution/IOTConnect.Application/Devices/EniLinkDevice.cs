@@ -42,7 +42,7 @@ namespace IOTConnect.Application.Devices
         /// <param name="recursive">Defines if all Child nodes inside Properties are append their values to the returning list.
         /// Default value is false, so that no recursive call arises</param>
         /// <returns>returns a list of values</returns>
-        public List<ValueState> GetAllValues(bool recursive = false)
+        public ValueState[] GetAllValues(bool recursive = false)
         {
             List<ValueState> values = base.Data.ToArray().ToList();
             if (recursive && Properties.Count > 0)
@@ -52,7 +52,7 @@ namespace IOTConnect.Application.Devices
                     values.AddRange(p.GetAllValues(true));
                 }
             }
-            return values;
+            return values.ToArray();
         }
 
         public override string ToString() => Id;
