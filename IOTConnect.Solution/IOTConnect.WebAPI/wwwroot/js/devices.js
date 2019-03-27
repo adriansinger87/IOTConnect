@@ -14,7 +14,7 @@
     function initActions() {
 
         var connection = new signalR.HubConnectionBuilder()
-            .withUrl("/devicesHub")
+            .withUrl(PATH + "devicesHub")
             .configureLogging(signalR.LogLevel.Warning)
             .build();
 
@@ -56,26 +56,25 @@
 
     function onMqttReceived(topic, message) {
 
-        var text = getSelectedText('selection');
+        var selected = $("#cb_" + topic.trimCss())[0].checked;
 
-        if (topic == text) {
-            var data = JSON.parse(message);
+        if (selected) {
             if (itemsArray[topic] == undefined || 
                 itemsArray[topic].length == 0) {
 
                 itemsArray[topic] = [];
-                itemsArray[topic].push(data);
+                itemsArray[topic].push(message);
                 updateChart(chart, topic, itemsArray)
 
-            } else if (itemsArray[topic].last().timestamp != data.timestamp) {
+            } else if (itemsArray[topic].last().timestamp != message.timestamp) {
 
-                itemsArray[topic].push(data);
+                itemsArray[topic].push(message);
                 updateChart(chart, topic, itemsArray)
             }
         }
     }
     
-    function getSelectedText(elementId) {
+    function getSelected(elementId) {
         var elt = document.getElementById(elementId);
 
         if (elt.selectedIndex == -1)

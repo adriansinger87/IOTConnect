@@ -5,6 +5,8 @@
         void ClearData();
         object[] GetData();
 
+        object LastData();
+
         // -- properties
 
         string Id { get; set; }

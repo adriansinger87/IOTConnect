@@ -17,7 +17,9 @@
         public abstract object[] GetData();
 
         public override string ToString() => $"{Id}: {Name}";
-        
+
+        public abstract object LastData();
+
         // -- properties
 
         public string Id { get; set; }

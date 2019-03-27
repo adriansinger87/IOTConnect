@@ -55,6 +55,26 @@ namespace IOTConnect.Application.Devices
             return values.ToArray();
         }
 
+        public override object LastData()
+        {
+            var data = new List<object>();
+
+            foreach (EnilinkDevice prop in Properties)
+            {
+                if (prop.Data.Count > 0)
+                {
+                    data.Add(new
+                    {
+                        prop.Id,
+                        prop.Name,
+                        data = prop.Data.Peek
+                    });
+                }
+            }
+
+            return data;
+        }
+
         public override string ToString() => Id;
 
         // -- properties

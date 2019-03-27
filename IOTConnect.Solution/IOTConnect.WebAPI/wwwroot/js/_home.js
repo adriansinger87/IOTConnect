@@ -20,7 +20,8 @@
                 devices: null
             },
             methods: {
-                getDevices: getDevices
+                getDevices: getDevices,
+                trimmed: function (s) { return s.trimCss(); }
             },
             updated: function () {
 
@@ -31,7 +32,7 @@
 
     function getDevices() {
         $.ajax({
-            url: "/api/devices",
+            url: PATH + "api/devices",
             type: 'GET',
             contentType: "application/json; charset=utf-8",
             datatype: 'json',

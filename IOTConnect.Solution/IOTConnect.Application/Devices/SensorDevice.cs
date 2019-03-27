@@ -1,6 +1,7 @@
 ﻿using IOTConnect.Application.Values;
 using IOTConnect.Domain.Models.IoT;
 using System;
+using System.Linq;
 
 namespace IOTConnect.Application.Devices
 {
@@ -44,7 +45,14 @@ namespace IOTConnect.Application.Devices
             return Data.ToArray();
         }
 
+        public override object LastData()
+        {
+            return Data.ToArray().Last();
+        }
+
         public override string ToString() => $"{base.ToString()} last value: {Data?.Peek?.Value ?? "N/A"}";
+
+
 
         // -- properties
 

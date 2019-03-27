@@ -13,11 +13,16 @@
     <environment exclude="Development">
         <link href="~/lib/materialize/css/materialize.min.css" rel="stylesheet" />
         <link href="~/lib/mdi/css/materialdesignicons.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.css" />
     </environment>
 
 </head>
 <body>
+
+    <script>
+        HOST = '@Context.Request.Host';
+        PATH = '@Url.Content("~/")';
+    </script>
 
     <partial name="_Header" />
 
@@ -42,7 +47,7 @@
         <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
         <script src="~/lib/vue/vue.min.js"></script>
         <script src="~/js/lib.js"></script>
-        <script src="~/js/main.js" asp-append-version="true"></script>
+        <script src="~/js/main.js"></script>
         <script src="~/js/devices.js"></script>
     </environment>
 
