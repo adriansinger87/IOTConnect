@@ -55,12 +55,13 @@ namespace IOTConnect.WebAPI.Controllers.Api
                 .AsParallel()
                 .Select((x) =>
                 {
-                    var val = x as ValueState;
-                    return new
-                    {
-                        t = val.UtcTime,
-                        v = val.Value
-                    };
+                    return x as ValueState;
+                    // TODO @ AS create extension method ToViewModel() for this
+                    //return new
+                    //{
+                    //    t = val.UtcTime,
+                    //    v = val.Value
+                    //};
                 })
                 .ToArray();
 

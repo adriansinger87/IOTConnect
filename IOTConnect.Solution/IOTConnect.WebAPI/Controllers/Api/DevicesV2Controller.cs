@@ -28,7 +28,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
         // GET: api/devices/item?id=...
         [HttpGet]
         [Route("item")]
-        public JsonResult Item([FromQuery(Name = "id")] string id, [FromQuery(Name = "length")] int length)
+        public JsonResult Item([FromQuery(Name = "id")] string id, [FromQuery(Name = "limit")] int limit)
         {
             var item = _context.GetResource(id, out bool found);
 
@@ -36,8 +36,7 @@ namespace IOTConnect.WebAPI.Controllers.Api
             {
                 id = item.Id,
                 name = item.Name,
-                data = item.GetData().Reverse().Take(length),
-                peek = item.GetData().Last()
+                data = item.GetData().Reverse().Take(limit)
             };
 
             return new JsonResult(viewModel);
