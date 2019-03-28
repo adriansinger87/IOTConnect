@@ -53,6 +53,11 @@
         "c3.min.js",
         "c3.min.css"
       ]
+    },
+    {
+      "library": "moment.js@2.24.0",
+      "destination": "wwwroot/lib/moment",
+      "files": ["moment.min.js"]
     }
   ]
 }

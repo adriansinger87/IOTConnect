@@ -1,13 +1,10 @@
 ﻿$(function () {
 
     var itemsArray = [];
-
     var chart = initChart();
 
     initActions();
-
     console.info("devices.js done");
-
 
     // -- functions
 
@@ -17,9 +14,6 @@
             .withUrl(PATH + "devicesHub")
             .configureLogging(signalR.LogLevel.Warning)
             .build();
-
-         /*TODO @ AS still on browser reload or by having more then on browser 
-         * opend data from signalr is written multiple times in the array for the chart*/
 
         connection.on("MqttReceived", onMqttReceived);
 
@@ -37,7 +31,7 @@
         var chart = c3.generate({
             bindto: '#chart',
             data: {
-                type: "area-spline",
+                type: "area",
                 x: 'x',
                 xFormat: '%Y-%m-%dT%H:%M:%S.%LZ', // 'xFormat' can be used as custom format of 'x'
                 columns: []
@@ -46,7 +40,7 @@
                 x: {
                     type: 'timeseries',
                     tick: {
-                        format: '%Y-%m-%d %H:%M:%S.%L'
+                        format: '%Y-%m-%d %H:%M:%S'
                     }
                 }
             }
@@ -59,17 +53,23 @@
         var selected = $("#cb_" + topic.trimCss())[0].checked;
 
         if (selected) {
-            if (itemsArray[topic] == undefined || 
-                itemsArray[topic].length == 0) {
+            if (itemsArray[topic] === undefined || 
+                itemsArray[topic].length === 0) {
 
                 itemsArray[topic] = [];
                 itemsArray[topic].push(message);
-                updateChart(chart, topic, itemsArray)
+                updateChart(chart, topic, itemsArray);
 
-            } else if (itemsArray[topic].last().timestamp != message.timestamp) {
+            } else if (itemsArray[topic].last().timestamp !== message.timestamp) {
+
+                var lastTime = moment().add(-1, 'm');  // older than now minus 1 minute
+                var ts = itemsArray[topic][0].timestamp;
+                if (moment(ts).isBefore(lastTime)) {
+                    itemsArray[topic].shift();  // removes the first item ant pushes the new one
+                }
 
                 itemsArray[topic].push(message);
-                updateChart(chart, topic, itemsArray)
+                updateChart(chart, topic, itemsArray);
             }
         }
     }
@@ -77,7 +77,7 @@
     function getSelected(elementId) {
         var elt = document.getElementById(elementId);
 
-        if (elt.selectedIndex == -1)
+        if (elt.selectedIndex === -1)
             return null;
 
         return elt.options[elt.selectedIndex].text;
@@ -89,11 +89,11 @@
         var times = [];
         var values = [];
 
-        times = list.map(element => element.timestamp)
-        values = list.map(element => element.value)
+        times = list.map(element => element.timestamp);
+        values = list.map(element => element.value);
 
-        times.unshift('x')
-        values.unshift(name)
+        times.unshift('x');
+        values.unshift(name);
 
         //TODO @ AS in devices.js removing the old device data from the chart via unload in the update function isn't working
         chartObject.load({
